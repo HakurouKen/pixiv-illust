@@ -15,6 +15,9 @@
     "pixiv",
     "api"
   ],
+  "scripts": {
+    "precommit": "node hide-privacy.js"
+  },
   "author": "HakurouKen",
   "license": "MIT",
   "bugs": {
