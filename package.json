@@ -4,6 +4,8 @@
   "description": "A third-party Node.js library for Pixiv.",
   "main": "index.js",
   "scripts": {
+    "compile": "babel src -d dist",
+    "test": "npm run compile && mocha --compilers js:babel-register",
     "precommit": "node hide-privacy.js"
   },
   "repository": {
