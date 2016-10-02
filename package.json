@@ -6,7 +6,7 @@
   "scripts": {
     "compile": "babel src -d dist",
     "test": "npm run compile && mocha --compilers js:babel-register",
-    "precommit": "node hide-privacy.js"
+    "hide-privacy": "git update-index --assume-unchanged test/*.privacy.json"
   },
   "repository": {
     "type": "git",
