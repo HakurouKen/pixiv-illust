@@ -146,3 +146,26 @@ class Login {
 
 const login = new Login();
 export default login;
+export function loginRequired(target, prop, descriptor) {
+    const method = descriptor.value;
+    descriptor.value = function(...args) {
+        try {
+            if (!login.loggedIn && !login.pending) {
+                return Promise.reject(new Error('Login Required.'));
+            }
+            let ret = method.apply(this, args);
+
+            if (login.loggedIn) {
+                return ret instanceof Promise ? ret : Promise.resolve(ret);
+            }
+            if (login.pending) {
+                return login.pending.then(() => {
+                    return ret;
+                });
+            }
+        } catch(e) {
+            return Promise.reject(e);
+        }
+    };
+    return descriptor;
+}

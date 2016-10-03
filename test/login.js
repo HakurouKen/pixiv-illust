@@ -3,12 +3,25 @@ import Promise from 'Bluebird';
 import path from 'path';
 import fs from 'fs';
 import login from '../dist/login';
+import { loginRequired } from '../dist/login';
 const account = require('./account.privacy.json');
 import 'babel-polyfill';
 
 const ASYNC_REQUEST_TIMEOUT = 10000;
 
 describe('login', function() {
+    class LoginTest {
+        constructor(){
+            this.executed = false;
+        }
+
+        @loginRequired
+        method(){
+            this.executed = true;
+            return this.executed;
+        }
+    }
+
     describe('when not logged in:', function() {
         describe('get#cookies()', function() {
             it('should return an empty array', function() {
@@ -34,6 +47,16 @@ describe('login', function() {
                 });
             }).timeout(ASYNC_REQUEST_TIMEOUT);
         });
+
+        describe('#loginRequired(target, prop, descriptor)', function(){
+            it('should reject when not logged in', function(done){
+                let action = new LoginTest();
+                let ret = action.method();
+                ret.catch(e => {
+                    done();
+                });
+            });
+        });
     });
 
     describe('login and logout:', function() {
@@ -53,15 +76,20 @@ describe('login', function() {
                     expect(pendingPromise).to.be.an.instanceof(Promise);
                 });
 
+                it('should wrap the `@loginRequired` methods to a Promise', function(){
+                    let action = new LoginTest();
+                    expect(action.method()).to.be.an.instanceof(Promise);
+                });
+
                 it('should clear the pending status', function(done) {
-                    user.then(function() {
+                    user.then(() => {
                         expect(login.pending).to.be.null;
                         done();
                     });
                 }).timeout(ASYNC_REQUEST_TIMEOUT);
 
                 it('should set cookies properly', function(done) {
-                    user.then(function() {
+                    user.then(() => {
                         let keys = login.cookies.map(cookie => cookie.key);
                         expect(keys).to.includes.members(['PHPSESSID','device_token','p_ab_id']);
                         done();
@@ -69,7 +97,7 @@ describe('login', function() {
                 }).timeout(ASYNC_REQUEST_TIMEOUT);
 
                 it('should resolve the pending promise when resolved', done => {
-                    pendingPromise.then(function() {
+                    pendingPromise.then(() => {
                         let keys = login.cookies.map(cookie => cookie.key);
                         expect(keys).to.includes.members(['PHPSESSID','device_token','p_ab_id']);
                         done();
@@ -83,9 +111,9 @@ describe('login', function() {
             });
         }
 
-        makeLoginTest('#login(account,password)', function() {
-            return login.login(account.USERNAME,account.PASSWORD);
-        });
+        // makeLoginTest('#login(account,password)', function() {
+        //     return login.login(account.USERNAME,account.PASSWORD);
+        // });
 
         makeLoginTest('#loads(file)', function() {
             let file = path.join(__dirname,'cookie.privacy.json');
@@ -133,6 +161,18 @@ describe('login', function() {
                     });
                 });
             }).timeout(ASYNC_REQUEST_TIMEOUT);
+        });
+
+        describe('loginRequired(target, prop, descriptor)',function(){
+            it('should execute the `@loginRequired` when loggedIn', function(done){
+                let action = new LoginTest();
+                let ret = action.method();
+                Promise.all([user,ret]).spread((_,result) => {
+                    expect(action.executed).to.equal(true);
+                    expect(result).to.be.equal(true);
+                    done();
+                });
+            });            
         });
     });
 });
