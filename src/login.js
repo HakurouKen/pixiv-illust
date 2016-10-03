@@ -105,9 +105,16 @@ class Login {
     }
 
     async dumps(file) {
+        let cookies = this.cookies.map(cookie => {
+            return {
+                key: cookie.key,
+                value: cookie.value
+            };
+        });
+
         return await fs.writeFileAsync(
             file,
-            JSON.stringify(this.cookieJar._jar.toJSON(),null,4)
+            JSON.stringify(cookies,null,4)
         );
     }
 
@@ -116,8 +123,13 @@ class Login {
         try {
             // A hack to load json cookiejar from file.
             let content = await fs.readFileAsync(file);
-            const CookieJar = this.cookieJar._jar.constructor;
-            this.cookieJar._jar = CookieJar.fromJSON(content.toString());
+            let jsonContent = JSON.parse(content.toString());
+            let jar = request.jar();
+            jsonContent.forEach(item => {
+                let cookie = request.cookie(`${item.key}=${item.value}`);
+                jar.setCookie(cookie,`http://${HOST}`);
+            });
+            this.cookieJar = jar;
             _resolve(this);
             return this;
         } catch(err) {
