@@ -1,0 +1,14 @@
+[
+    {
+        "key": "PHPSESSID",
+        "value": "CORRESPONDING_VALUE_IN_YOUR_COOKIES"
+    },
+    {
+        "key": "p_ab_id",
+        "value": "CORRESPONDING_VALUE_IN_YOUR_COOKIES"
+    },
+    {
+        "key": "device_token",
+        "value": "CORRESPONDING_VALUE_IN_YOUR_COOKIES"
+    }
+]
