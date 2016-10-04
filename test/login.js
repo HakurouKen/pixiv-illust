@@ -49,7 +49,7 @@ describe('login', function() {
             }).timeout(ASYNC_REQUEST_TIMEOUT);
         });
 
-        describe('#loginRequired(target, prop, descriptor)', function(){
+        describe('#@loginRequired', function(){
             it('should reject when not logged in', function(done){
                 let action = new LoginTest();
                 let ret = action.method();
@@ -107,9 +107,9 @@ describe('login', function() {
             });
         }
 
-        // makeLoginTest('#login(account,password)', function() {
-        //     return login.login(account.USERNAME,account.PASSWORD);
-        // });
+        makeLoginTest('#login(account,password)', function() {
+            return login.login(account.USERNAME,account.PASSWORD);
+        });
 
         makeLoginTest('#loads(file)', function() {
             let file = path.join(__dirname,'cookie.privacy.json');
@@ -147,7 +147,7 @@ describe('login', function() {
             }).timeout(ASYNC_REQUEST_TIMEOUT);
         });
 
-        describe('dumps(file)', function() {
+        describe('#dumps(file)', function() {
             it('should dumps to the specific file', function(done) {
                 let file = path.join(__dirname,'output-cookie.privacy.json');
                 login.dumps(file).then(() => {
@@ -159,7 +159,7 @@ describe('login', function() {
             }).timeout(ASYNC_REQUEST_TIMEOUT);
         });
 
-        describe('loginRequired(target, prop, descriptor)',function(){
+        describe('#@loginRequired',function(){
             let cookieFile = path.join(__dirname,'cookie.privacy.json');
 
             it('should be wrapped to a Promise', function(){

@@ -26,7 +26,7 @@ describe('utility', function(){
         });
     });
 
-    describe('#cachedProperty', function(){
+    describe('#@cachedProperty', function(){
         class TestClass {
             constructor(){
                 this.valueSync = 0;
