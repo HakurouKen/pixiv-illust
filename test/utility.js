@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import Promise from 'Bluebird';
-import { isthenable,cachedProperty } from '../dist/utility';
+import { isthenable,cachedProperty,range } from '../dist/utility';
+import 'babel-polyfill';
 
 describe('utility', function(){
     describe('#isthenable(o)', function() {
@@ -77,6 +78,29 @@ describe('utility', function(){
                 expect(value2).to.equal(1);
                 done();
             })();
+        });
+    });
+
+    describe('#range(start, stop, step)', function(){
+        it('should return array [0,1,2,...,,n] when only one params specified', function(){
+            expect(range(5)).to.eql([0,1,2,3,4]);
+        });
+
+        it('should return an array from start(include) to end(not include) when start && end specified', function(){
+            expect(range(2,5)).to.eql([2,3,4]);
+        });
+
+        it('should return an array from start to end in step', function(){
+            expect(range(0,10,2)).to.eql([0,2,4,6,8]);
+            expect(range(0,10,3)).to.eql([0,3,6,9]);
+            expect(range(10,0,-2)).to.eql([10,8,6,4,2]);
+        });
+
+        it('should return an empty array when never reach the end',function(){
+            expect(range(-1)).to.eql([]);
+            expect(range(5,2)).to.eql([]);
+            expect(range(0,10,-2)).to.eql([]);
+            expect(range(10,0,3)).to.eql([]);
         });
     });
 });
