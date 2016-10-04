@@ -153,13 +153,14 @@ export function loginRequired(target, prop, descriptor) {
             if (!login.loggedIn && !login.pending) {
                 return Promise.reject(new Error('Login Required.'));
             }
-            let ret = method.apply(this, args);
 
             if (login.loggedIn) {
+                let ret = method.apply(this, args);
                 return ret instanceof Promise ? ret : Promise.resolve(ret);
             }
             if (login.pending) {
                 return login.pending.then(() => {
+                    let ret = method.apply(this, args);
                     return ret;
                 });
             }

@@ -17,8 +17,9 @@ describe('login', function() {
 
         @loginRequired
         method(){
+            expect(login.loggedIn).to.equal(true);
             this.executed = true;
-            return this.executed;
+            return 42;
         }
     }
 
@@ -74,11 +75,6 @@ describe('login', function() {
 
                 it('should set a pending promise', function() {
                     expect(pendingPromise).to.be.an.instanceof(Promise);
-                });
-
-                it('should wrap the `@loginRequired` methods to a Promise', function(){
-                    let action = new LoginTest();
-                    expect(action.method()).to.be.an.instanceof(Promise);
                 });
 
                 it('should clear the pending status', function(done) {
@@ -164,15 +160,32 @@ describe('login', function() {
         });
 
         describe('loginRequired(target, prop, descriptor)',function(){
-            it('should execute the `@loginRequired` when loggedIn', function(done){
+            let cookieFile = path.join(__dirname,'cookie.privacy.json');
+
+            it('should be wrapped to a Promise', function(){
                 let action = new LoginTest();
-                let ret = action.method();
-                Promise.all([user,ret]).spread((_,result) => {
-                    expect(action.executed).to.equal(true);
-                    expect(result).to.be.equal(true);
+                expect(action.method()).to.be.an.instanceof(Promise);
+            });
+
+            it('should not execute before the login finished', function(done){
+                let action = new LoginTest();
+                login.reset();
+                login.loads(cookieFile);
+                // if the method execute before login finished,
+                // variable `login.loggedIn` must be false
+                action.method().then(ret => {
                     done();
                 });
-            });            
+            });
+
+            it('should execute when loggedIn', function(done){
+                let action = new LoginTest()
+                action.method().then(ret => {
+                    expect(action.executed).to.equal(true);
+                    expect(ret).to.equal(42);
+                    done();
+                });
+            });
         });
     });
 });
