@@ -4,6 +4,7 @@
   "description": "A third-party Node.js library for Pixiv.",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint src/ && eslint test/ -c .eslintrc.test.js",
     "compile": "babel src -d dist",
     "test": "npm run compile && mocha --compilers js:babel-register",
     "hide-privacy": "git update-index --assume-unchanged test/*.privacy.json"
@@ -24,6 +25,7 @@
   "homepage": "https://github.com/HakurouKen/node-pixiv#readme",
   "devDependencies": {
     "babel-cli": "^6.14.0",
+    "babel-eslint": "^7.0.0",
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-polyfill": "^6.13.0",
@@ -32,6 +34,7 @@
     "babel-preset-es2017": "^6.14.0",
     "babel-register": "^6.14.0",
     "chai": "^3.5.0",
+    "eslint": "^3.7.0",
     "mocha": "^3.0.2"
   },
   "dependencies": {
