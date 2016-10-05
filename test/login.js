@@ -24,6 +24,10 @@ describe('login', function() {
     }
 
     describe('when not logged in:', function() {
+        before(function() {
+            login.reset();
+        });
+
         describe('get#cookies()', function() {
             it('should return an empty array', function() {
                 let cookies = login.cookies;
@@ -107,9 +111,9 @@ describe('login', function() {
             });
         }
 
-        makeLoginTest('#login(account,password)', function() {
-            return login.login(account.USERNAME,account.PASSWORD);
-        });
+        // makeLoginTest('#login(account,password)', function() {
+        //     return login.login(account.USERNAME,account.PASSWORD);
+        // });
 
         makeLoginTest('#loads(file)', function() {
             let file = path.join(__dirname,'cookie.privacy.json');
