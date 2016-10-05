@@ -111,9 +111,9 @@ describe('login', function() {
             });
         }
 
-        // makeLoginTest('#login(account,password)', function() {
-        //     return login.login(account.USERNAME,account.PASSWORD);
-        // });
+        makeLoginTest('#login(account,password)', function() {
+            return login.login(account.USERNAME,account.PASSWORD);
+        });
 
         makeLoginTest('#loads(file)', function() {
             let file = path.join(__dirname,'cookie.privacy.json');
