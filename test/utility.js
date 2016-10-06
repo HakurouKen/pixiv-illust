@@ -104,7 +104,7 @@ describe('utility', function(){
         });
     });
 
-    describe('#replacePlacehoder(str, dataSource, startDelimiter, endDelimiter)', function(){
+    describe('#replacePlaceholder(str, dataSource, startDelimiter, endDelimiter)', function(){
         let dataSource;
         before(function(){
             dataSource = {
