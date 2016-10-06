@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import Promise from 'Bluebird';
-import { isthenable,cachedProperty,range } from '../dist/utility';
+import { isthenable,cachedProperty,range,replacePlaceholder } from '../dist/utility';
 import 'babel-polyfill';
 
 describe('utility', function(){
@@ -101,6 +101,48 @@ describe('utility', function(){
             expect(range(5,2)).to.eql([]);
             expect(range(0,10,-2)).to.eql([]);
             expect(range(10,0,3)).to.eql([]);
+        });
+    });
+
+    describe('#replacePlacehoder(str, dataSource, startDelimiter, endDelimiter)', function(){
+        let dataSource;
+        before(function(){
+            dataSource = {
+                repository: 'node-pixiv',
+                author: 'HakurouKen',
+                files: ['package.json','README.md']
+            };
+        });
+
+        it('should replace the placeholder with data in dataSource',function(){
+            expect(replacePlaceholder(`Author: {{author}}`, dataSource))
+                .to.equal('Author: HakurouKen');
+            expect(replacePlaceholder(`Project: {{author}}/{{repository}}`, dataSource))
+                .to.equal('Project: HakurouKen/node-pixiv');
+        });
+
+        it('should support javascript expression', function(){
+            expect(replacePlaceholder(`Project: {{author + '/' + repository}}`, dataSource))
+                .to.equal('Project: HakurouKen/node-pixiv');
+
+            expect(replacePlaceholder(`Files: {{files.join(',')}}`, dataSource))
+                .to.equal('Files: package.json,README.md');
+        });
+
+        it('should replace nonexistent keys with empty string', function(){
+            expect(replacePlaceholder(`PR: {{pr}}`), dataSource)
+                .to.equal('PR: ');
+            expect(replacePlaceholder(`Files: {{files[0]}}, PR: {{pr}}`, dataSource))
+                .to.equal('Files: package.json, PR: ');
+        });
+
+        it('should throw when syntax error happend in expression', function(){
+            expect(() => replacePlaceholder(`Syntax Error: {{ files+ }}`)).to.throw(Error);
+        });
+
+        it('should replace illegal expression with empty string', function(){
+            expect(replacePlaceholder(`Error: {{files.that.does.not.exist}}`,dataSource))
+                .to.equal('Error: ');
         });
     });
 });

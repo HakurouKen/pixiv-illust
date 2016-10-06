@@ -35,4 +35,19 @@ export function range(start, stop, step=1) {
     }
 
     return result;
-};
+}
+
+export function replacePlaceholder(str, dataSource, startDelimiter='{{', endDelimiter='}}') {
+    let regex = new RegExp(startDelimiter + '(.*?)' + endDelimiter,'g');
+    return str.replace(regex,($,$1) => {
+        return (new Function('dataSource',
+            `try {
+                with(dataSource){
+                    return ${$1};
+                }
+            } catch(e) {
+                return "";
+            }`
+        ))(dataSource);
+    });
+}
