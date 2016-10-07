@@ -144,5 +144,12 @@ describe('utility', function(){
             expect(replacePlaceholder(`Error: {{files.that.does.not.exist}}`,dataSource))
                 .to.equal('Error: ');
         });
+
+        it('should support custom delimiter', function(){
+            expect(replacePlaceholder(`Project: <% author + '/' + repository %>`, dataSource, '<%', '%>'))
+                .to.equal('Project: HakurouKen/node-pixiv');
+            expect(replacePlaceholder(`PR: <% pr %>`, dataSource, '<%', '%>'))
+                .to.equal('PR: ');
+        });
     });
 });
