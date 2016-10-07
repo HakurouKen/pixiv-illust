@@ -39,6 +39,7 @@ export function range(start, stop, step=1) {
 
 export function replacePlaceholder(str, dataSource, startDelimiter='{{', endDelimiter='}}') {
     let regex = new RegExp(startDelimiter + '(.*?)' + endDelimiter,'g');
+    str = str.toString();
     return str.replace(regex,($,$1) => {
         return (new Function('dataSource',
             `try {
@@ -50,4 +51,14 @@ export function replacePlaceholder(str, dataSource, startDelimiter='{{', endDeli
             }`
         ))(dataSource);
     });
+}
+
+export function leftPad (str, len, pad=' ') {
+    str = str.toString();
+    let i = -1;
+    len = len - str.length;
+    while (++i < len) {
+        str = pad + str;
+    }
+    return str;
 }

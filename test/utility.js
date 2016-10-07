@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import Promise from 'Bluebird';
-import { isthenable,cachedProperty,range,replacePlaceholder } from '../dist/utility';
+import { isthenable,cachedProperty,range,replacePlaceholder,leftPad } from '../dist/utility';
 import 'babel-polyfill';
 
 describe('utility', function(){
@@ -150,6 +150,15 @@ describe('utility', function(){
                 .to.equal('Project: HakurouKen/node-pixiv');
             expect(replacePlaceholder(`PR: <% pr %>`, dataSource, '<%', '%>'))
                 .to.equal('PR: ');
+        });
+    });
+
+    describe('#leftPad(str, len, pad)', function(){
+        it('should left pad the given string with pad', function(){
+            expect(leftPad('123456',8,'0')).to.equal('00123456');
+            expect(leftPad('123456',7,'0')).to.equal('0123456');
+            expect(leftPad('123456',6,'0')).to.equal('123456');
+            expect(leftPad('123456',5,'0')).to.equal('123456');
         });
     });
 });
