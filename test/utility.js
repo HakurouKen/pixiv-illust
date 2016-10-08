@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import Promise from 'Bluebird';
-import { isthenable,cachedProperty,range,replacePlaceholder,leftPad } from '../dist/utility';
+import { isthenable,cachedProperty,range,replacePlaceholder,leftPad,noop } from '../dist/utility';
 import 'babel-polyfill';
 
 describe('utility', function(){
@@ -83,7 +83,7 @@ describe('utility', function(){
 
         it('should cached the result in _cache variable of instance', function(done){
             (async function(){
-                expect(instance._cache).to.be.an('undefined');
+                expect(instance._cache).to.be.undefined;
                 await instance.addSync();
                 expect(instance._cache).to.be.an('object');
                 expect(instance._cache).to.have.property('addSync');
@@ -101,7 +101,7 @@ describe('utility', function(){
                 expect(value).to.equal(1);
 
                 let instance2 = new TestClass(2);
-                expect(instance2._cache).to.be.an('undefined');
+                expect(instance2._cache).to.be.undefined;
                 let value2 = await instance2.addSync();
                 expect(value2).to.equal(2);
                 done();
@@ -187,6 +187,13 @@ describe('utility', function(){
             expect(leftPad('123456',7,'0')).to.equal('0123456');
             expect(leftPad('123456',6,'0')).to.equal('123456');
             expect(leftPad('123456',5,'0')).to.equal('123456');
+        });
+    });
+
+    describe('#noop()', function(){
+        it('should be an empty function', function(){
+            expect(noop).to.be.a('function');
+            expect(noop()).to.be.undefined;
         });
     });
 });

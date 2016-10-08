@@ -62,3 +62,5 @@ export function leftPad (str, len, pad=' ') {
     }
     return str;
 }
+
+export function noop() {}
