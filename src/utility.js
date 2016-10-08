@@ -5,9 +5,9 @@ export function isthenable(o){
 }
 
 export function cachedProperty(target, prop, descriptor) {
-    let cache = target._cache = target._cache || {};
     const method = descriptor.value;
     descriptor.value = function(...args) {
+        let cache = this._cache = this._cache || {};
         if (cache.hasOwnProperty(prop)) {
             return isthenable(prop) ? prop : Promise.resolve(cache[prop]);
         }

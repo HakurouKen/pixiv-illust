@@ -29,20 +29,21 @@ describe('utility', function(){
 
     describe('#@cachedProperty', function(){
         class TestClass {
-            constructor(){
+            constructor(step=1){
+                this.step = step;
                 this.valueSync = 0;
                 this.valueAsync = 0;
             }
 
             @cachedProperty
             addSync(){
-                this.valueSync += 1;
+                this.valueSync += this.step;
                 return this.valueSync;
             }
 
             @cachedProperty
             addAsync(){
-                this.valueAsync += 1;
+                this.valueAsync += this.step;
                 return Promise.resolve(this.valueAsync);
             }
         }
@@ -76,6 +77,33 @@ describe('utility', function(){
                 expect(value).to.equal(1);
                 let value2 = await instance.addAsync();
                 expect(value2).to.equal(1);
+                done();
+            })();
+        });
+
+        it('should cached the result in _cache variable of instance', function(done){
+            (async function(){
+                expect(instance._cache).to.be.an('undefined');
+                await instance.addSync();
+                expect(instance._cache).to.be.an('object');
+                expect(instance._cache).to.have.property('addSync');
+
+                await instance.addAsync();
+                expect(instance._cache).to.be.an('object');
+                expect(instance._cache).to.have.property('addAsync');
+                done();
+            })();
+        });
+
+        it('should not affet other instance', function(done){
+            (async function(){
+                let value = await instance.addSync();
+                expect(value).to.equal(1);
+
+                let instance2 = new TestClass(2);
+                expect(instance2._cache).to.be.an('undefined');
+                let value2 = await instance2.addSync();
+                expect(value2).to.equal(2);
                 done();
             })();
         });
