@@ -118,4 +118,10 @@ describe('Downloader',function(){
             }],done);
         }).timeout(ASYNC_REQUEST_TIMEOUT);
     });
+
+    describe('prototype#download(filePath)', function(){
+        it('will take a long time, you may run download method yourself.',function(){
+
+        });
+    });
 });
