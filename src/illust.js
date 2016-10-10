@@ -3,8 +3,9 @@ import login from './login';
 import { loginRequired } from './login';
 import cheerio from 'cheerio';
 import Promise from 'Bluebird';
+import _ from 'lodash';
 import path from 'path';
-import { range,cachedProperty,leftPad,replacePlaceholder } from './utility';
+import { cachedProperty,replacePlaceholder } from './utility';
 import extend from 'extend';
 
 const request = Promise.promisifyAll(require('request'));
@@ -114,7 +115,7 @@ class Downloader {
     @validType(TYPE.MULTIPLE)
     async _getImageUrls(){
         let num = await this._getNum();
-        return Promise.all(range(num).map(index =>
+        return Promise.all(_.range(num).map(index =>
             request.getAsync({
                 url: `${this.getPageUrl('manga_big')}&page=${index}`,
                 jar: login.cookieJar
@@ -137,7 +138,7 @@ class Downloader {
         });
         let $ = cheerio.load(response.body);
         let img0 = $('img').attr('src');
-        return range(num).map(index => img0.replace(/_p(\d+)\..*?$/,($,$1) => {
+        return _.range(num).map(index => img0.replace(/_p(\d+)\..*?$/,($,$1) => {
             return $.replace(`_p${$1}`,`_p${index}`);
         }));
     }
@@ -160,7 +161,7 @@ class Downloader {
             let urls = this._guessImageUrls();
             return urls.map((url,index) => {
                 return extend({},info,{
-                    title: `${info.title} - ${leftPad(index+1, 2, '0')}`,
+                    title: `${info.title} - ${_.padStart(index+1, 2, '0')}`,
                     url: url,
                     suffix: path.extname(url)
                 });

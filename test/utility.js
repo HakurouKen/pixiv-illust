@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import Promise from 'Bluebird';
-import { isthenable,cachedProperty,range,replacePlaceholder,leftPad,noop } from '../dist/utility';
+import { isthenable,cachedProperty,replacePlaceholder } from '../dist/utility';
 import 'babel-polyfill';
 
 describe('utility', function(){
@@ -109,29 +109,6 @@ describe('utility', function(){
         });
     });
 
-    describe('#range(start, stop, step)', function(){
-        it('should return array [0,1,2,...,,n] when only one params specified', function(){
-            expect(range(5)).to.eql([0,1,2,3,4]);
-        });
-
-        it('should return an array from start(include) to end(not include) when start && end specified', function(){
-            expect(range(2,5)).to.eql([2,3,4]);
-        });
-
-        it('should return an array from start to end in step', function(){
-            expect(range(0,10,2)).to.eql([0,2,4,6,8]);
-            expect(range(0,10,3)).to.eql([0,3,6,9]);
-            expect(range(10,0,-2)).to.eql([10,8,6,4,2]);
-        });
-
-        it('should return an empty array when never reach the end',function(){
-            expect(range(-1)).to.eql([]);
-            expect(range(5,2)).to.eql([]);
-            expect(range(0,10,-2)).to.eql([]);
-            expect(range(10,0,3)).to.eql([]);
-        });
-    });
-
     describe('#replacePlaceholder(str, dataSource, startDelimiter, endDelimiter)', function(){
         let dataSource;
         before(function(){
@@ -178,22 +155,6 @@ describe('utility', function(){
                 .to.equal('Project: HakurouKen/node-pixiv');
             expect(replacePlaceholder(`PR: <% pr %>`, dataSource, '<%', '%>'))
                 .to.equal('PR: ');
-        });
-    });
-
-    describe('#leftPad(str, len, pad)', function(){
-        it('should left pad the given string with pad', function(){
-            expect(leftPad('123456',8,'0')).to.equal('00123456');
-            expect(leftPad('123456',7,'0')).to.equal('0123456');
-            expect(leftPad('123456',6,'0')).to.equal('123456');
-            expect(leftPad('123456',5,'0')).to.equal('123456');
-        });
-    });
-
-    describe('#noop()', function(){
-        it('should be an empty function', function(){
-            expect(noop).to.be.a('function');
-            expect(noop()).to.be.undefined;
         });
     });
 });

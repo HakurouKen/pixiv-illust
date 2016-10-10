@@ -19,24 +19,6 @@ export function cachedProperty(target, prop, descriptor) {
     return descriptor;
 }
 
-export function range(start, stop, step=1) {
-    if (typeof stop == 'undefined') {
-        stop = start;
-        start = 0;
-    }
-
-    let result = [];
-    if ((step > 0 && start >= stop) || (step < 0 && start <= stop)) {
-        return result;
-    }
-
-    for (let i = start; step > 0 ? i < stop : i > stop; i += step) {
-        result.push(i);
-    }
-
-    return result;
-}
-
 export function replacePlaceholder(str, dataSource, startDelimiter='{{', endDelimiter='}}') {
     let regex = new RegExp(startDelimiter + '(.*?)' + endDelimiter,'g');
     str = str.toString();
@@ -52,15 +34,3 @@ export function replacePlaceholder(str, dataSource, startDelimiter='{{', endDeli
         ))(dataSource);
     });
 }
-
-export function leftPad (str, len, pad=' ') {
-    str = str.toString();
-    let i = -1;
-    len = len - str.length;
-    while (++i < len) {
-        str = pad + str;
-    }
-    return str;
-}
-
-export function noop() {}
