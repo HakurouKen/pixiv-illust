@@ -1,4 +1,5 @@
 import Promise from 'Bluebird';
+import _ from 'lodash';
 
 export function isthenable(o){
     return typeof (o && o.then) === 'function';
@@ -9,11 +10,20 @@ export function cachedProperty(target, prop, descriptor) {
     descriptor.value = function(...args) {
         let cache = this._cache = this._cache || {};
         if (cache.hasOwnProperty(prop)) {
-            return isthenable(prop) ? prop : Promise.resolve(cache[prop]);
+            for (let result of cache[prop]) {
+                if (_.isEqual(args,result.args)) {
+                    let value = result.value;
+                    return isthenable(value) ? value : Promise.resolve(value);
+                }
+            }
         }
+        cache[prop] = cache[prop] || [];
         let ret = method.apply(this, args);
         ret = isthenable(ret) ? ret : Promise.resolve(ret);
-        cache[prop] = ret;
+        cache[prop].push({
+            args: args,
+            value: ret
+        });
         return ret;
     };
     return descriptor;

@@ -28,34 +28,73 @@ describe('utility', function(){
     });
 
     describe('#@cachedProperty', function(){
-        class TestClass {
-            constructor(step=1){
-                this.step = step;
-                this.valueSync = 0;
-                this.valueAsync = 0;
+        class Multiplier {
+            constructor(base=1){
+                this.base = base;
+                this.methodAsyncExecuted = 0;
+                this.methodAsyncExecuted = 0;
             }
 
             @cachedProperty
-            addSync(){
-                this.valueSync += this.step;
-                return this.valueSync;
+            multiAsync(...args){
+                this.methodAsyncExecuted++;
+                return args.reduce((product,factor) =>{
+                    return product * factor;
+                },this.base);
             }
 
             @cachedProperty
-            addAsync(){
-                this.valueAsync += this.step;
-                return Promise.resolve(this.valueAsync);
+            multiAsync(...args){
+                this.methodAsyncExecuted++;
+                let ret = args.reduce((product,factor) =>{
+                    return product * factor;
+                },this.base);
+                return Promise.resolve(ret);
             }
         }
 
         let instance;
         beforeEach(function(){
-            instance = new TestClass();
+            instance = new Multiplier();
         });
 
         it('should wrap the result to a thenable(Promise) instance',function(){
-            expect(instance.addSync()).to.be.an.instanceof(Promise);
-            expect(isthenable(instance.addAsync())).to.equal(true);
+            expect(instance.multiAsync(1)).to.be.an.instanceof(Promise);
+            expect(isthenable(instance.multiAsync(1))).to.equal(true);
+        });
+
+        it('should only cache the sync method when args are exactly the same', function(done){
+            (async function(){
+                let value = await instance.multiAsync(2,3);
+                expect(value).to.equal(6);
+                expect(instance.methodAsyncExecuted).to.equal(1);
+
+                let value2 = await instance.multiAsync(3,2);
+                expect(value2).to.equal(6);
+                expect(instance.methodAsyncExecuted).to.equal(2);
+
+                let value3 = await instance.multiAsync(3,4);
+                expect(value3).to.equal(12);
+                expect(instance.methodAsyncExecuted).to.equal(3);
+                done();
+            })();
+        });
+
+        it('should only cache the async method when args are exactly the same', function(done){
+            (async function(){
+                let value = await instance.multiAsync(2,3);
+                expect(value).to.equal(6);
+                expect(instance.methodAsyncExecuted).to.equal(1);
+
+                let value2 = await instance.multiAsync(3,2);
+                expect(value2).to.equal(6);
+                expect(instance.methodAsyncExecuted).to.equal(2);
+
+                let value3 = await instance.multiAsync(3,4);
+                expect(value3).to.equal(12);
+                expect(instance.methodAsyncExecuted).to.equal(3);
+                done();
+            })();
         });
 
         it('should cached the sync property, and turn it into Promise', function(done){
@@ -63,20 +102,96 @@ describe('utility', function(){
             // We cannot return a Promise object in the callback function.
             // To use the async keywords, just wrap the async function into a new closure.
             (async function(){
-                let value = await instance.addSync();
-                expect(value).to.equal(1);
-                let value2 = await instance.addSync();
-                expect(value2).to.equal(1);
+                let value = await instance.multiAsync(2,3,4);
+                expect(value).to.equal(24);
+                expect(instance.methodAsyncExecuted).to.equal(1);
+
+                let value2 = await instance.multiAsync(2,3,4);
+                expect(value2).to.equal(24);
+                expect(instance.methodAsyncExecuted).to.equal(1);
+
+                let value3 = await instance.multiAsync(5,1,4);
+                expect(value3).to.equal(20);
+                expect(instance.methodAsyncExecuted).to.equal(2);
+
+                let value4 = await instance.multiAsync(2,3,4);
+                expect(value4).to.equal(24);
+                expect(instance.methodAsyncExecuted).to.equal(2);
+
                 done();
             })();
         });
 
-        it('should cached the async property', function(done){
+        it('should cache the async property', function(done){
             (async function(){
-                let value = await instance.addAsync();
-                expect(value).to.equal(1);
-                let value2 = await instance.addAsync();
-                expect(value2).to.equal(1);
+                let value = await instance.multiAsync(5,4,5);
+                expect(instance.methodAsyncExecuted).to.equal(1);
+                expect(value).to.equal(100);
+
+                let value2 = await instance.multiAsync(5,4,5);
+                expect(instance.methodAsyncExecuted).to.equal(1);
+                expect(value2).to.equal(100);
+
+                let value3 = await instance.multiAsync(5,4,9);
+                expect(instance.methodAsyncExecuted).to.equal(2);
+                expect(value3).to.equal(180);
+
+                let value4 = await instance.multiAsync(5,4,5);
+                expect(instance.methodAsyncExecuted).to.equal(2);
+                expect(value4).to.equal(100);
+
+                done();
+            })();
+        });
+
+        it('can cache several result for one sync function with different args',function(done){
+            (async function(){
+                let value = await instance.multiAsync(2,3,4);
+                expect(value).to.equal(24);
+                expect(instance.methodAsyncExecuted).to.equal(1);
+
+                let value2 = await instance.multiAsync(2,3,4);
+                expect(value2).to.equal(24);
+                expect(instance.methodAsyncExecuted).to.equal(1);
+
+                let value3 = await instance.multiAsync(5,1,4);
+                expect(value3).to.equal(20);
+                expect(instance.methodAsyncExecuted).to.equal(2);
+
+                let value4 = await instance.multiAsync(2,3,4);
+                expect(value4).to.equal(24);
+                expect(instance.methodAsyncExecuted).to.equal(2);
+
+                let value5 = await instance.multiAsync(5,1,4);
+                expect(value5).to.equal(20);
+                expect(instance.methodAsyncExecuted).to.equal(2);
+
+                done();
+            })();
+        });
+
+        it('can cache several result for one async function with different args',function(done){
+            (async function(){
+                let value = await instance.multiAsync(2,3,4);
+                expect(value).to.equal(24);
+                expect(instance.methodAsyncExecuted).to.equal(1);
+
+                let value2 = await instance.multiAsync(2,3,4);
+                expect(value2).to.equal(24);
+                expect(instance.methodAsyncExecuted).to.equal(1);
+
+                let value3 = await instance.multiAsync(5,1,4);
+                expect(value3).to.equal(20);
+                expect(instance.methodAsyncExecuted).to.equal(2);
+
+                let value4 = await instance.multiAsync(2,3,4);
+                expect(value4).to.equal(24);
+                expect(instance.methodAsyncExecuted).to.equal(2);
+
+                let value5 = await instance.multiAsync(5,1,4);
+                expect(value5).to.equal(20);
+                expect(instance.methodAsyncExecuted).to.equal(2);
+
                 done();
             })();
         });
@@ -84,26 +199,29 @@ describe('utility', function(){
         it('should cached the result in _cache variable of instance', function(done){
             (async function(){
                 expect(instance._cache).to.be.undefined;
-                await instance.addSync();
+                await instance.multiAsync(1,2);
                 expect(instance._cache).to.be.an('object');
-                expect(instance._cache).to.have.property('addSync');
+                expect(instance._cache).to.have.property('multiAsync');
 
-                await instance.addAsync();
+                await instance.multiAsync();
                 expect(instance._cache).to.be.an('object');
-                expect(instance._cache).to.have.property('addAsync');
+                expect(instance._cache).to.have.property('multiAsync');
                 done();
             })();
         });
 
         it('should not affet other instance', function(done){
             (async function(){
-                let value = await instance.addSync();
-                expect(value).to.equal(1);
+                let value = await instance.multiAsync(2);
+                expect(value).to.equal(2);
 
-                let instance2 = new TestClass(2);
+                let instance2 = new Multiplier(2);
                 expect(instance2._cache).to.be.undefined;
-                let value2 = await instance2.addSync();
-                expect(value2).to.equal(2);
+                expect(instance2.methodAsyncExecuted).to.equal(0);
+
+                let value2 = await instance2.multiAsync(3,4);
+                expect(value2).to.equal(24);
+                expect(instance2.methodAsyncExecuted).to.equal(1);
                 done();
             })();
         });
