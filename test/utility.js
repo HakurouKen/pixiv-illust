@@ -199,13 +199,25 @@ describe('utility', function(){
         it('should cached the result in _cache variable of instance', function(done){
             (async function(){
                 expect(instance._cache).to.be.undefined;
+
                 await instance.multiSync(1,2);
                 expect(instance._cache).to.be.an('object');
                 expect(instance._cache).to.have.property('multiSync');
+                expect(instance._cache.multiSync).to.be.an('array');
+                instance._cache.multiSync.forEach(cache => {
+                    expect(cache).to.have.property('args');
+                    expect(cache).to.have.property('value');
+                });
 
                 await instance.multiAsync();
                 expect(instance._cache).to.be.an('object');
                 expect(instance._cache).to.have.property('multiAsync');
+                expect(instance._cache.multiAsync).to.be.an('array');
+                instance._cache.multiAsync.forEach(cache => {
+                    expect(cache).to.have.property('args');
+                    expect(cache).to.have.property('value');
+                });
+
                 done();
             })();
         });
