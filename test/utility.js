@@ -27,17 +27,17 @@ describe('utility', function(){
         });
     });
 
-    describe('#@cachedProperty', function(){
+    describe.only('#@cachedProperty', function(){
         class Multiplier {
             constructor(base=1){
                 this.base = base;
-                this.methodAsyncExecuted = 0;
+                this.methodSyncExecuted = 0;
                 this.methodAsyncExecuted = 0;
             }
 
             @cachedProperty
-            multiAsync(...args){
-                this.methodAsyncExecuted++;
+            multiSync(...args){
+                this.methodSyncExecuted++;
                 return args.reduce((product,factor) =>{
                     return product * factor;
                 },this.base);
@@ -59,23 +59,23 @@ describe('utility', function(){
         });
 
         it('should wrap the result to a thenable(Promise) instance',function(){
-            expect(instance.multiAsync(1)).to.be.an.instanceof(Promise);
+            expect(instance.multiSync(1)).to.be.an.instanceof(Promise);
             expect(isthenable(instance.multiAsync(1))).to.equal(true);
         });
 
         it('should only cache the sync method when args are exactly the same', function(done){
             (async function(){
-                let value = await instance.multiAsync(2,3);
+                let value = await instance.multiSync(2,3);
                 expect(value).to.equal(6);
-                expect(instance.methodAsyncExecuted).to.equal(1);
+                expect(instance.methodSyncExecuted).to.equal(1);
 
-                let value2 = await instance.multiAsync(3,2);
+                let value2 = await instance.multiSync(3,2);
                 expect(value2).to.equal(6);
-                expect(instance.methodAsyncExecuted).to.equal(2);
+                expect(instance.methodSyncExecuted).to.equal(2);
 
-                let value3 = await instance.multiAsync(3,4);
+                let value3 = await instance.multiSync(3,4);
                 expect(value3).to.equal(12);
-                expect(instance.methodAsyncExecuted).to.equal(3);
+                expect(instance.methodSyncExecuted).to.equal(3);
                 done();
             })();
         });
@@ -102,21 +102,21 @@ describe('utility', function(){
             // We cannot return a Promise object in the callback function.
             // To use the async keywords, just wrap the async function into a new closure.
             (async function(){
-                let value = await instance.multiAsync(2,3,4);
+                let value = await instance.multiSync(2,3,4);
                 expect(value).to.equal(24);
-                expect(instance.methodAsyncExecuted).to.equal(1);
+                expect(instance.methodSyncExecuted).to.equal(1);
 
-                let value2 = await instance.multiAsync(2,3,4);
+                let value2 = await instance.multiSync(2,3,4);
                 expect(value2).to.equal(24);
-                expect(instance.methodAsyncExecuted).to.equal(1);
+                expect(instance.methodSyncExecuted).to.equal(1);
 
-                let value3 = await instance.multiAsync(5,1,4);
+                let value3 = await instance.multiSync(5,1,4);
                 expect(value3).to.equal(20);
-                expect(instance.methodAsyncExecuted).to.equal(2);
+                expect(instance.methodSyncExecuted).to.equal(2);
 
-                let value4 = await instance.multiAsync(2,3,4);
+                let value4 = await instance.multiSync(2,3,4);
                 expect(value4).to.equal(24);
-                expect(instance.methodAsyncExecuted).to.equal(2);
+                expect(instance.methodSyncExecuted).to.equal(2);
 
                 done();
             })();
@@ -146,25 +146,25 @@ describe('utility', function(){
 
         it('can cache several result for one sync function with different args',function(done){
             (async function(){
-                let value = await instance.multiAsync(2,3,4);
+                let value = await instance.multiSync(2,3,4);
                 expect(value).to.equal(24);
-                expect(instance.methodAsyncExecuted).to.equal(1);
+                expect(instance.methodSyncExecuted).to.equal(1);
 
-                let value2 = await instance.multiAsync(2,3,4);
+                let value2 = await instance.multiSync(2,3,4);
                 expect(value2).to.equal(24);
-                expect(instance.methodAsyncExecuted).to.equal(1);
+                expect(instance.methodSyncExecuted).to.equal(1);
 
-                let value3 = await instance.multiAsync(5,1,4);
+                let value3 = await instance.multiSync(5,1,4);
                 expect(value3).to.equal(20);
-                expect(instance.methodAsyncExecuted).to.equal(2);
+                expect(instance.methodSyncExecuted).to.equal(2);
 
-                let value4 = await instance.multiAsync(2,3,4);
+                let value4 = await instance.multiSync(2,3,4);
                 expect(value4).to.equal(24);
-                expect(instance.methodAsyncExecuted).to.equal(2);
+                expect(instance.methodSyncExecuted).to.equal(2);
 
-                let value5 = await instance.multiAsync(5,1,4);
+                let value5 = await instance.multiSync(5,1,4);
                 expect(value5).to.equal(20);
-                expect(instance.methodAsyncExecuted).to.equal(2);
+                expect(instance.methodSyncExecuted).to.equal(2);
 
                 done();
             })();
@@ -199,9 +199,9 @@ describe('utility', function(){
         it('should cached the result in _cache variable of instance', function(done){
             (async function(){
                 expect(instance._cache).to.be.undefined;
-                await instance.multiAsync(1,2);
+                await instance.multiSync(1,2);
                 expect(instance._cache).to.be.an('object');
-                expect(instance._cache).to.have.property('multiAsync');
+                expect(instance._cache).to.have.property('multiSync');
 
                 await instance.multiAsync();
                 expect(instance._cache).to.be.an('object');
