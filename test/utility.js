@@ -27,7 +27,7 @@ describe('utility', function(){
         });
     });
 
-    describe.only('#@cachedProperty', function(){
+    describe('#@cachedProperty', function(){
         class Multiplier {
             constructor(base=1){
                 this.base = base;
