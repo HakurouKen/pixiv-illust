@@ -2,7 +2,7 @@
   "name": "node-pixiv",
   "version": "0.1.0",
   "description": "A third-party Node.js library for Pixiv.",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "lint": "eslint src/ && eslint test/ -c .eslintrc.test.js",
     "compile": "babel src -d dist",
