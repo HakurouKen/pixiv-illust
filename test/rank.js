@@ -11,7 +11,7 @@ function doLogin(){
     return login.loads(__dirname +'/cookie.privacy.json');
 }
 
-describe.only('Rank', function(){
+describe('Rank', function(){
     describe('prototype#constructor(mode,date)', function(){
         it('should create an new instance when mode is valid', function(){
             expect(new Rank()).to.be.instanceof(Rank);
