@@ -40,7 +40,8 @@ describe.only('BookMark', function(){
 
         it('should return the specific page of bookmarks', function(done){
             bookmark.getPage(1).then(resp => {
-                expect(resp).to.have.property('current',1);
+                expect(resp).to.have.property('currentPage',1);
+                expect(resp).to.have.property('totalPage');
                 expect(resp).to.have.property('total');
                 expect(resp.contents).to.be.an('array');
                 contentsCheck(resp.contents);

@@ -14,7 +14,7 @@ class Bookmark {
 
     @loginRequired
     @cachedProperty
-    async getPage(page=1){
+    async _getPage(page) {
         let response = await request.getAsync({
             url: `${URL}?p=${page}`,
             jar: login.cookieJar
@@ -22,23 +22,38 @@ class Bookmark {
         if (response.statusCode !== 200) {
             throw response;
         }
-        let $ = cheerio.load(response.body);
+        return cheerio.load(response.body);
+    }
+
+    @cachedProperty
+    async _getPageContent(page) {
+        let $ = await this._getPage(page);
+        return $('.image-item').map((i,elem)=>{
+            let $elem = $(elem);
+            let $user = $elem.find('.user');
+            // The keys here are consistent with the ranking page.
+            return {
+                illust_id: +$elem.attr('id').replace('li_',''),
+                url: $elem.find('.work img').attr('src'),
+                user_name: $user.attr('data-user_name'),
+                user_id: $user.attr('data-user_id'),
+                title: $elem.find('.title').text()
+            };
+        }).get();
+    }
+
+    @cachedProperty
+    async getPage(page=1){
+        let $ = await this._getPage(page);
+        let total = parseInt($('.count-badge').text().trim(),10) || 0;
+        let contents = await this._getPageContent(page);
 
         return {
-            current: page,
-            total: $('.page-list').eq(0).find('li').length || 1,
-            contents: $('.image-item').map((i,elem)=>{
-                let $elem = $(elem);
-                let $user = $elem.find('.user');
-                // The keys here are consistent with the ranking page.
-                return {
-                    illust_id: +$elem.attr('id').replace('li_',''),
-                    url: $elem.find('.work img').attr('src'),
-                    user_name: $user.attr('data-user_name'),
-                    user_id: $user.attr('data-user_id'),
-                    title: $elem.find('.title').text()
-                };
-            }).get()
+            currentPage: page,
+            // 20 illusts per page
+            totalPage: (total / 20 | 0) + 1,
+            total: total,
+            contents: contents
         };
     }
 
@@ -50,11 +65,11 @@ class Bookmark {
     @cachedProperty
     async getAll(){
         let page0 = await this.getPage();
-        let total = page0.total;
+        let totalPage = page0.totalPage;
         let ret = page0.contents;
-        for (let i = 2; i < total; i++) {
-            let pageN = await this.getPage(i);
-            ret = ret.concat(pageN.contents);
+        for (let i = 2; i < totalPage; i++) {
+            let contents = await this._getPageContent(i);
+            ret = ret.concat(contents);
         }
         return ret;
     }
