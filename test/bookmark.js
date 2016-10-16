@@ -17,7 +17,7 @@ function contentsCheck(contents){
 
 const REQUEST_TIMEOUT = 5000;
 
-describe.only('BookMark', function(){
+describe('BookMark', function(){
     describe('prototype#getPage(page)',function(){
         let bookmark;
 
