@@ -4,6 +4,7 @@ import login from '../dist/login';
 import Author from '../dist/author';
 
 const REQUEST_TIMEOUT = 5000;
+const TEST_USER_ID = 6996493;
 
 function doLogin(){
     return login.loads(__dirname +'/cookie.privacy.json');
@@ -11,10 +12,9 @@ function doLogin(){
 
 describe('Author', function(){
     let author;
-    const USER_ID = 6996493;
     before(function(){
         doLogin();
-        author = new Author(USER_ID);
+        author = new Author(TEST_USER_ID);
     });
 
     describe('prototype#illustPageUrl(page)', function(){
@@ -64,5 +64,18 @@ describe('Author', function(){
                 }
             })();
         }).timeout(REQUEST_TIMEOUT);
+    });
+
+    describe('prototype#getAllIllusts()', function(){
+        it('should return the list of all illusts', function(done){
+            // the test will cost a long time, pass directly.
+            // ----
+            // let author = new Author(TEST_USER_ID);
+            // author.getAllIllusts().then(illusts => {
+            //     checkContents(illusts);
+            //     done();
+            // });
+            done();
+        });
     });
 });

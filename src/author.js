@@ -79,6 +79,18 @@ class Author {
         }
     }
 
+    @cachedProperty
+    async getAllIllusts() {
+        let page0 = await this.getIllusts();
+        let totalPage = page0.totalPage;
+        let contents = page0.contents;
+        for (let i = 2; i <= totalPage; i++) {
+            let pageContents = await this._getIllustsContent(i);
+            contents = contents.concat(pageContents);
+        }
+        return contents;
+    }
+
 }
 
 export default Author;
