@@ -22,7 +22,7 @@ class Author {
     @loginRequired
     @cachedProperty
     async getInfo() {
-        let url = this.infoUrl();
+        let url = this.infoUrl;
         let response = await request.getAsync({
             url: url,
             jar: login.cookieJar
