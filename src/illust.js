@@ -39,7 +39,7 @@ function validType(...types) {
     };
 }
 
-class Downloader {
+class Illust {
     constructor(id){
         this.id = id;
     }
@@ -207,4 +207,4 @@ class Downloader {
     }
 }
 
-export default Downloader;
+export default Illust;

@@ -2,12 +2,12 @@ import { expect } from 'chai';
 import Promise from 'Bluebird';
 import path from 'path';
 import login from '../dist/login';
-import Downloader from '../dist/illust';
+import Illust from '../dist/illust';
 import 'babel-polyfill';
 
 const ASYNC_REQUEST_TIMEOUT = 10000;
 
-describe('Downloader',function(){
+describe('Illust',function(){
     before(function(){
         login.loads(path.join(__dirname,'cookie.privacy.json'));
     });
@@ -15,7 +15,7 @@ describe('Downloader',function(){
     describe('prototype#getInfo()', function(){
         const infoTestCase = async function(id,info,done){
             try {
-                let downloader = new Downloader(id);
+                let downloader = new Illust(id);
                 let _info = await downloader.getInfo();
                 expect(_info).to.eql(info);
                 done();
@@ -61,7 +61,7 @@ describe('Downloader',function(){
     describe('prototype#_getDownloadQueue()', function(){
         const downloadQueueTestCase = async function(id,queue,done) {
             try {
-                let downloader = new Downloader(id);
+                let downloader = new Illust(id);
                 let downloadQueue = await downloader._getDownloadQueue();
                 expect(downloadQueue).to.eql(queue);
                 done();
