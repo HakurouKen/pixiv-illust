@@ -38,3 +38,10 @@ jspm_packages
 
 # Built files
 dist
+
+# Downloaded files
+*.jpg
+*.png
+*.gif
+*.jpeg
+*.zip
