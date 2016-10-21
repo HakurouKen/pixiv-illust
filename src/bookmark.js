@@ -25,8 +25,9 @@ class Bookmark {
         return cheerio.load(response.body);
     }
 
+    @loginRequired
     @cachedProperty
-    async _getPageContent(page) {
+    async getPageContent(page=1) {
         let $ = await this._getPage(page);
         return $('.image-item').map((i,elem)=>{
             let $elem = $(elem);
@@ -46,7 +47,7 @@ class Bookmark {
     async getPage(page=1){
         let $ = await this._getPage(page);
         let total = parseInt($('.count-badge').text().trim(),10) || 0;
-        let contents = await this._getPageContent(page);
+        let contents = await this.getPageContent(page);
 
         return {
             currentPage: page,
@@ -68,7 +69,7 @@ class Bookmark {
         let totalPage = page0.totalPage;
         let ret = page0.contents;
         for (let i = 2; i < totalPage; i++) {
-            let contents = await this._getPageContent(i);
+            let contents = await this.getPageContent(i);
             ret = ret.concat(contents);
         }
         return ret;

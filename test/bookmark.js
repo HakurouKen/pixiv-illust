@@ -52,6 +52,35 @@ describe('BookMark', function(){
         }).timeout(REQUEST_TIMEOUT);
     });
 
+    describe('prototpye#getPageContent()', function(){
+        let bookmark;
+
+        before(function(){
+            bookmark = new Bookmark();
+        });
+
+        beforeEach(function(){
+            return doLogin();
+        });
+
+        it('needs login.',function(done){
+            login.reset();
+            bookmark.getPageContent().then(()=> {
+                return done(new Error('Login check error'));
+            },err => {
+                done();
+            });
+        });
+
+        it('return the marked illust list',function(done){
+            bookmark.getPageContent().then(function(contents){
+                contentsCheck(contents);
+                done();
+            }).catch(err => done(err));
+        }).timeout(REQUEST_TIMEOUT);
+
+    });
+
     describe('prototype#getAll()',function(){
         let bookmark;
 
