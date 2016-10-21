@@ -2,7 +2,7 @@ import 'babel-polyfill';
 import fs from 'fs';
 import path from 'path';
 import program from 'commander';
-import { login,Bookmark,Illust } from '..';
+import { login,Bookmark,Illust,Author } from '..';
 
 // basic path settings.
 let BASE_PATH,cookieFile;
@@ -60,6 +60,21 @@ program
         await downloadIllusts(firstPage.contents);
         for (let page = 2; page < firstPage; page++) {
             let list = await bookmark.getPageContent(page);
+            await downloadIllusts(list);
+        }
+        console.log(`Download successfully.`);
+    });
+
+program
+    .command('author <id>')
+    .action(async (id) => {
+        await loginAction();
+        let author = new Author(id);
+        let firstPage = await author.getIllusts();
+        let total = firstPage.total;
+        await downloadIllusts(firstPage.contents);
+        for (let page = 2; page < firstPage; page++) {
+            let list = await author.getIllustsContent(page);
             await downloadIllusts(list);
         }
         console.log(`Download successfully.`);
