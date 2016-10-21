@@ -1,3 +1,5 @@
 #! /usr/bin/env node --harmony
 
-require('../dist/bin/download');
+var Downloader = require('../dist/bin/download');
+
+Downloader.setup(__dirname);

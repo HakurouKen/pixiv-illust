@@ -4,31 +4,37 @@ import path from 'path';
 import program from 'commander';
 import { login,Illust } from '..';
 
+// basic path settings.
+let BASE_PATH,cookieFile;
+export function setup(root=__dirname) {
+    BASE_PATH = root;
+    cookieFile = path.join(root,'.cookies.json');
+    return program.parse(process.argv);
+}
+
 program
-    .option('-u --user <usearname>','username')
+    .option('-u --user <username>','username')
     .option('-p --password <password>','password')
-    .option('-c --cookie <cookie>','cookie file','.cookie')
+    .option('-c --cookies <cookies>','cookie file')
     .option('-d --dest [folder]','download destination folder','')
 
-function loginAction(){
+const loginAction = async () => {
     if (program.user && program.password) {
-        login.login(program.user,program.password);
-    } else if (program.cookie) {
-        login.loads(cookie);
+        await login.login(program.user,program.password);
+        await login.dumps(cookieFile);
     } else {
-        throw new Error('Login Required.');
+        await login.loads(program.cookies || cookieFile);
     }
 }
 
 program
     .command('illust <id>')
-    .action((id) => {
-        loginAction();
+    .action(async (id) => {
+        await loginAction();
         let illust = new Illust(id);
         let folder = program.dest || '';
-        illust.download(
+        await illust.download(
             path.join(folder,'{{author}} - {{title}}{{suffix}}')
         );
+        console.log(`Download successfully.`);
     });
-
-program.parse(process.argv);
