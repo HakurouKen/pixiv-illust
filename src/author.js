@@ -51,7 +51,7 @@ class Author {
     }
 
     @cachedProperty
-    async _getIllustsContent(page=1) {
+    async getIllustsContent(page=1) {
         let $ = await this._getIllustsPage(page);
         return $('.image-item').map((i,elem) => {
             let $elem = $(elem);
@@ -67,7 +67,7 @@ class Author {
     @cachedProperty
     async getIllusts(page=1) {
         let $ = await this._getIllustsPage(page);
-        let contents = await this._getIllustsContent(page);
+        let contents = await this.getIllustsContent(page);
         let total = parseInt($('.count-badge').text().trim(),10) || 0;
 
         return {
@@ -85,7 +85,7 @@ class Author {
         let totalPage = page0.totalPage;
         let contents = page0.contents;
         for (let i = 2; i <= totalPage; i++) {
-            let pageContents = await this._getIllustsContent(i);
+            let pageContents = await this.getIllustsContent(i);
             contents = contents.concat(pageContents);
         }
         return contents;

@@ -66,6 +66,20 @@ describe('Author', function(){
         }).timeout(REQUEST_TIMEOUT);
     });
 
+    describe('prototype#getIllustsContent(page)', function(){
+        it('should return the specific page content of illusts list.', function(done){
+            (async function(){
+                try {
+                    let contents = await author.getIllustsContent();
+                    checkContents(contents);
+                    done();
+                } catch(err) {
+                    return done(err);
+                }
+            })();
+        }).timeout(REQUEST_TIMEOUT);
+    });
+
     describe('prototype#getAllIllusts()', function(){
         it('should return the list of all illusts', function(done){
             // the test will cost a long time, pass directly.
