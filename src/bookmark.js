@@ -32,9 +32,10 @@ class Bookmark {
         return $('.image-item').map((i,elem)=>{
             let $elem = $(elem);
             let $user = $elem.find('.user');
+            let url = $elem.find('.work').attr('href') || '';
             // The keys here are consistent with the ranking page.
             return {
-                illust_id: +$elem.attr('id').replace('li_',''),
+                illust_id: +(url.match(/illust_id=(\d+)/) || [])[1] || 0,
                 url: $elem.find('.work img').attr('src'),
                 user_name: $user.attr('data-user_name'),
                 user_id: $user.attr('data-user_id'),
