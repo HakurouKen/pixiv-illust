@@ -39,7 +39,7 @@ program
         console.log(`Download successfully.`);
     });
 
-const downloadList = async(list, name='{{author}} - {{title}}{{suffix}}') => {
+const downloadIllusts = async(list, name='{{author}} - {{title}}{{suffix}}') => {
     for (let info of list) {
         try {
             let illust = new Illust(info.illust_id);
@@ -57,10 +57,10 @@ program
         let bookmark = new Bookmark();
         let firstPage = await bookmark.get();
         let total = firstPage.total;
-        await downloadList(firstPage.contents);
+        await downloadIllusts(firstPage.contents);
         for (let page = 2; page < firstPage; page++) {
             let list = await bookmark.getPageContent(page);
-            await downloadList(list);
+            await downloadIllusts(list);
         }
         console.log(`Download successfully.`);
     });
