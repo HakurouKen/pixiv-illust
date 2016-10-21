@@ -45,3 +45,6 @@ dist
 *.gif
 *.jpeg
 *.zip
+
+# Privacy
+*.cookies.*
