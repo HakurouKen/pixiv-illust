@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import Promise from 'Bluebird';
-import { isthenable,cachedProperty,replacePlaceholder } from '../dist/utility';
+import { isthenable,cachedProperty,replacePlaceholder,getDate } from '../dist/utility';
 import 'babel-polyfill';
 
 describe('utility', function(){
@@ -286,5 +286,21 @@ describe('utility', function(){
             expect(replacePlaceholder(`PR: <% pr %>`, dataSource, '<%', '%>'))
                 .to.equal('PR: ');
         });
+    });
+
+    describe('#getDate(d)', function(){
+        it('should return the yyyyMMdd format date string', function(){
+            let date = new Date('2016-01-01');
+            expect(getDate(date)).to.equal('20160101');
+        });
+
+        it('should get date from a timestamp number properly', function(){
+            expect(getDate(1451606400000)).to.equal('20160101');
+        });
+
+        it('should return the string directly when params given is string', function(){
+            expect(getDate('20160102')).to.equal('20160102');
+            expect(getDate('2016-01-02')).to.equal('2016-01-02');
+        })
     });
 });

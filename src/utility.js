@@ -44,3 +44,16 @@ export function replacePlaceholder(str, dataSource, startDelimiter='{{', endDeli
         ))(dataSource);
     });
 }
+
+export function getDate(d) {
+    if (typeof d === 'string') {
+        return d;
+    }
+    if (!(d instanceof Date)) {
+        d = new Date(d);
+    }
+    let year = d.getFullYear();
+    let month = d.getMonth() + 1;
+    let date = d.getDate();
+    return `${year}${_.padStart(month,2,'0')}${_.padStart(date,2,'0')}`;
+}
