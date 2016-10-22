@@ -17,7 +17,7 @@ class Rank {
             throw Error('Unvalid mode.');
         }
         this.mode = mode;
-        // default yesterday.
+        // default 30 hours before.
         this.date = getDate(date || new Date()-30*3600*1000);
     }
 
