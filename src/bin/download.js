@@ -40,10 +40,13 @@ program
     });
 
 const downloadIllusts = async(list, name='{{author}} - {{title}}{{suffix}}') => {
+    let folder = program.dest || '';
     for (let info of list) {
         try {
             let illust = new Illust(info.illust_id);
-            await illust.download(name);
+            await illust.download(
+                path.join(BASE_PATH,folder,name)
+            );
         } catch (err) {
             console.error(`ID: ${info && info.id} download error.`);
         }
