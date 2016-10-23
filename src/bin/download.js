@@ -2,7 +2,7 @@ import 'babel-polyfill';
 import fs from 'fs';
 import path from 'path';
 import program from 'commander';
-import { login,Bookmark,Illust,Author } from '..';
+import { login,Bookmark,Illust,Author,Rank } from '..';
 
 // basic path settings.
 let BASE_PATH,cookieFile;
@@ -27,18 +27,6 @@ const loginAction = async () => {
     }
 }
 
-program
-    .command('illust <id>')
-    .action(async (id) => {
-        await loginAction();
-        let illust = new Illust(id);
-        let folder = program.dest || '';
-        await illust.download(
-            path.join(BASE_PATH,folder,'{{author}} - {{title}}{{suffix}}')
-        );
-        console.log(`Download successfully.`);
-    });
-
 const downloadIllusts = async(list, name='{{author}} - {{title}}{{suffix}}') => {
     let folder = program.dest || '';
     for (let info of list) {
@@ -52,6 +40,18 @@ const downloadIllusts = async(list, name='{{author}} - {{title}}{{suffix}}') => 
         }
     }
 }
+
+program
+    .command('illust <id>')
+    .action(async (id) => {
+        await loginAction();
+        let illust = new Illust(id);
+        let folder = program.dest || '';
+        await illust.download(
+            path.join(BASE_PATH,folder,'{{author}} - {{title}}{{suffix}}')
+        );
+        console.log(`Download successfully.`);
+    });
 
 program
     .command('bookmark')
@@ -70,7 +70,7 @@ program
 
 program
     .command('author <id>')
-    .action(async (id) => {
+    .action(async (id,cmd) => {
         await loginAction();
         let author = new Author(id);
         let firstPage = await author.getIllusts();
@@ -80,5 +80,18 @@ program
             let list = await author.getIllustsContent(page);
             await downloadIllusts(list);
         }
+        console.log(`Download successfully.`);
+    });
+
+program
+    .command('rank')
+    .option('-m --mode <mode>','rank mode','daily')
+    .option('-t --date <date>','date of rank list')
+    .option('-r --rank <rank>','top n rank',parseInt,50)
+    .action(async (cmd) => {
+        await loginAction();
+        let rank = new Rank(cmd.mode,cmd.date);
+        let contents = await rank.getRank(cmd.rank);
+        await downloadIllusts(contents);
         console.log(`Download successfully.`);
     });
