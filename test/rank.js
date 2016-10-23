@@ -11,7 +11,7 @@ function doLogin(){
     return login.loads(__dirname +'/cookie.privacy.json');
 }
 
-describe('Rank', function(){
+describe.only('Rank', function(){
     describe('prototype#constructor(mode,date)', function(){
         it('should create an new instance when mode is valid', function(){
             expect(new Rank()).to.be.instanceof(Rank);
@@ -98,7 +98,7 @@ describe('Rank', function(){
         it('is the alias of getPage', function(done){
             let ranking = new Rank();
             Promise.all([
-                ranking.getPage(3),
+                ranking.get(3),
                 ranking.getPage(3)
             ]).spread((getPageResponse,getResponse) => {
                 expect(getPageResponse).to.eql(getResponse);
@@ -107,11 +107,24 @@ describe('Rank', function(){
         }).timeout(REQUEST_TIMEOUT);
     });
 
-    describe('prototype#getAllContents()', function(){
+    describe('prototype#getRank(rank)', function() {
+        it('should return top n rank illusts', function(done) {
+            let ranking = new Rank('daily');
+            ranking.getRank(100).then(contents => {
+                expect(contents).to.be.an('array');
+                expect(contents.length).to.eql(100);
+                done();
+            }).catch(err => {
+                done(err);
+            });
+        }).timeout(REQUEST_TIMEOUT*2);
+    });
+
+    describe('prototype#getAll()', function(){
         it('should return all contents of ranking', function(){
             // this test will take a long time.
             let ranking = new Rank('monthly');
-            ranking.getAllContents().then(contents => {
+            ranking.getAll().then(contents => {
                 expect(contents).to.be.an('array');
                 done();
             }).catch(err => {

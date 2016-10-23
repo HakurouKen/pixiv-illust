@@ -55,10 +55,10 @@ class Rank {
     }
 
     @cachedProperty
-    async getAllContents(){
+    async getRank(rank=500) {
         let contents = [];
         let page = 1;
-        while (page){
+        while (page && contents.length < rank){
             let data = await this.getPage(page);
             let len = data && data.contents && data.contents.length;
             if (!len) {
@@ -67,7 +67,12 @@ class Rank {
             page = data.next;
             contents = contents.concat(data.contents);
         }
-        return contents;
+        return contents.slice(0,rank);
+    }
+
+    @cachedProperty
+    async getAll(){
+        return this.getRank(Infinity);
     }
 }
 
