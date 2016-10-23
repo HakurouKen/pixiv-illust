@@ -188,7 +188,7 @@ class Illust {
         for (let info of infos) {
             try {
                 let file = replacePlaceholder(filepath,info);
-                console.log(`Downloading ${file} ...`);
+                console.log(`Downloading ${path.basename(file)} ...`);
                 let resp = await request.getAsync({
                     url: info.url,
                     headers: {
