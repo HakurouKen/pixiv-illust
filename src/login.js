@@ -121,7 +121,6 @@ class Login {
     async loads(file) {
         let [_resolve,_reject] = this._setPendingPromise();
         try {
-            // A hack to load json cookiejar from file.
             let content = await fs.readFileAsync(file);
             let jsonContent = JSON.parse(content.toString());
             let jar = request.jar();
