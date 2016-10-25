@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import program from 'commander';
 import { login,Bookmark,Illust,Author,Rank } from '..';
+const pack = require('../../package.json');
 
 // basic path settings.
 let BASE_PATH,cookieFile;
@@ -13,6 +14,7 @@ export function setup(root='') {
 }
 
 program
+    .version(pack.version)
     .option('-u --user <username>','username')
     .option('-p --password <password>','password')
     .option('-c --cookies <cookies>','cookie file')
