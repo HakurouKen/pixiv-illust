@@ -18,6 +18,9 @@
     "pixiv",
     "api"
   ],
+  "bin": {
+      "pixiv-download": "bin/download"
+  },
   "author": "HakurouKen",
   "license": "MIT",
   "bugs": {
