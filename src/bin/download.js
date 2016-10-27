@@ -29,14 +29,18 @@ const loginAction = async () => {
     }
 }
 
-const downloadIllusts = async(list, name='{{author}} - {{title}}{{suffix}}') => {
+const getPath = (filePath) => {
     let folder = program.dest || '';
+    return folder.charAt(0) === '/' ?
+        path.join(folder,filePath) :
+        path.join(BASE_PATH,folder,filePath);
+}
+
+const downloadIllusts = async(list, name='{{author}} - {{title}}{{suffix}}') => {
     for (let info of list) {
         try {
             let illust = new Illust(info.illust_id);
-            await illust.download(
-                path.join(BASE_PATH,folder,name)
-            );
+            await illust.download(getPath(name));
         } catch (err) {
             console.error(`ID: ${info && info.id} download error.`);
         }
@@ -48,10 +52,7 @@ program
     .action(async (id) => {
         await loginAction();
         let illust = new Illust(id);
-        let folder = program.dest || '';
-        await illust.download(
-            path.join(BASE_PATH,folder,'{{author}} - {{title}}{{suffix}}')
-        );
+        await illust.download(getPath('{{author}} - {{title}}{{suffix}}'));
         console.log(`Download successfully.`);
     });
 
