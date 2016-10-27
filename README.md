@@ -24,7 +24,7 @@ If you don't want to set global alias, use `./bin/download` instead.
 ```
 
 if `-u -p` is specified, the `-c` params will be ignored.
-Once logged in, login cookie will be cached as json in file `./bin/.cookie.json`. If no login params is specified, the program will try to load this default cached cookie.
+Once logged in, login cookie will be cached as json in file `.cookie.json`. If no login params is specified, the program will try to load this default cached cookie.
 
 ### Illust
 
