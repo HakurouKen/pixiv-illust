@@ -49,7 +49,7 @@ pixiv-downoad author <id>
 
 ### Rank
 
-Download leadboard illusts.
+Download leaderboard illusts.
 
 Option:
 
