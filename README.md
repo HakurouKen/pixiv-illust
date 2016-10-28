@@ -62,3 +62,28 @@ Option:
 ```
 pixiv-download rank
 ```
+
+
+## Example
+```
+# Download single illust
+pixiv-download illust 59615212 -u username -p password -d ../
+
+# Download illust use cached json-cookie file.
+pixiv-download illust 59657563
+
+# Download author illusts
+pixiv-download author 8895868
+
+# Download all bookmarks
+pixiv-download bookmarks
+
+# Download leaderboard
+pixiv-download rank
+
+# Download weekly top 50
+pixv-download rank -m weekly -n 50
+
+# Download top 100 ranked by male in 2016-10-01
+pixiv-download rank -m daily -t 20161001 -n 100
+```
