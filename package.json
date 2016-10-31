@@ -15,7 +15,9 @@
   },
   "keywords": [
     "pixiv",
-    "api"
+    "api",
+    "download",
+    "illust"
   ],
   "bin": {
       "pixiv-download": "bin/download"
