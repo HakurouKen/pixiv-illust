@@ -4,12 +4,11 @@ import path from 'path';
 import fs from 'fs';
 import login from '../dist/login';
 import { loginRequired } from '../dist/login';
-const account = require('./account.privacy.json');
-import 'babel-polyfill';
+const account = require('./.account.privacy.json');
 
 const ASYNC_REQUEST_TIMEOUT = 10000;
 
-describe('login', function() {
+describe('login - ', function() {
     class LoginTest {
         constructor(){
             this.executed = false;
@@ -116,7 +115,7 @@ describe('login', function() {
         });
 
         makeLoginTest('#loads(file)', function() {
-            let file = path.join(__dirname,'cookie.privacy.json');
+            let file = path.join(__dirname,'.cookie.privacy.json');
             return login.loads(file);
         });
     });
@@ -125,7 +124,7 @@ describe('login', function() {
         let user;
         before(() => {
             // user = login.login(account.USERNAME,account.PASSWORD);
-            user = login.loads(path.join(__dirname,'cookie.privacy.json'));
+            user = login.loads(path.join(__dirname,'.cookie.privacy.json'));
         });
 
         describe('get#cookies()', function() {
@@ -164,7 +163,7 @@ describe('login', function() {
         });
 
         describe('#@loginRequired',function(){
-            let cookieFile = path.join(__dirname,'cookie.privacy.json');
+            let cookieFile = path.join(__dirname,'.cookie.privacy.json');
 
             it('should be wrapped to a Promise', function(){
                 let action = new LoginTest();

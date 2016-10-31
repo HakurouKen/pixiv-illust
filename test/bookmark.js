@@ -1,10 +1,9 @@
-import 'babel-polyfill';
 import { expect } from 'chai';
 import login from '../dist/login';
 import Bookmark from '../dist/bookmark';
 
 function doLogin(){
-    return login.loads(__dirname +'/cookie.privacy.json');
+    return login.loads(__dirname +'/.cookie.privacy.json');
 }
 
 function contentsCheck(contents){

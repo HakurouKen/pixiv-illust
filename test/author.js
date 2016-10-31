@@ -1,4 +1,3 @@
-import 'babel-polyfill';
 import { expect } from 'chai';
 import login from '../dist/login';
 import Author from '../dist/author';
@@ -7,7 +6,7 @@ const REQUEST_TIMEOUT = 5000;
 const TEST_USER_ID = 6996493;
 
 function doLogin(){
-    return login.loads(__dirname +'/cookie.privacy.json');
+    return login.loads(__dirname +'/.cookie.privacy.json');
 }
 
 describe('Author', function(){

@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 import Promise from 'Bluebird';
 import { isthenable,cachedProperty,replacePlaceholder,getDate } from '../dist/utility';
-import 'babel-polyfill';
 
 describe('utility', function(){
     describe('#isthenable(o)', function() {

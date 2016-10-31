@@ -1,4 +1,3 @@
-import 'babel-polyfill';
 import { expect } from 'chai';
 import _ from 'lodash';
 import Promise from 'Bluebird';
@@ -8,7 +7,7 @@ import Rank from '../dist/rank';
 const REQUEST_TIMEOUT = 3000;
 
 function doLogin(){
-    return login.loads(__dirname +'/cookie.privacy.json');
+    return login.loads(__dirname +'/.cookie.privacy.json');
 }
 
 describe('Rank', function(){
