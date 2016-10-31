@@ -7,8 +7,7 @@
     "prepublish": "npm run compile && node chmod.js",
     "lint": "eslint src/ && eslint test/ -c .eslintrc.test.js",
     "compile": "babel src -d dist",
-    "test": "npm run compile && mocha --compilers js:babel-register",
-    "hide-privacy": "git update-index --assume-unchanged test/*.privacy.json"
+    "test": "npm run compile && mocha --compilers js:babel-register"
   },
   "repository": {
     "type": "git",
