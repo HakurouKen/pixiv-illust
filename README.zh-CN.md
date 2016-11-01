@@ -3,6 +3,8 @@
 
 ## 安装
 
+### 通过 Git
+
 ```
 git clone https://github.com/HakurouKen/pixiv-illust.git
 cd pixiv-illust && npm install
@@ -10,6 +12,14 @@ npm link
 ```
 
 注意： `npm link` 将会把 `pixiv-download` 链接为全局指令。如果你不想设置全局的别名，也可以直接使用 `./bin/download`。
+
+### 通过 npm
+
+```
+npm install pixiv-illust -g
+```
+
+注意：如果你只想使用 javascript API 而不是全局 `pixiv-download` 指令时，只需 `npm install pixiv-illust`。
 
 ## Cli
 

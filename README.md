@@ -3,14 +3,25 @@ A third-party Node.js library for Pixiv.
 
 ## Install
 
+### By Git
+
 ```
 git clone https://github.com/HakurouKen/pixiv-illust.git
-cd node-pixiv && npm install
+cd pixiv-illust && npm install
 npm link
 ```
 
 NOTE: `npm link` will alias `pixiv-download` as global command.
 If you don't want to set global alias, use `./bin/download` instead.
+
+### By npm
+
+```
+npm install pixiv-illust -g
+```
+
+NOTE: If you only want to use javascript api without global command `pixiv-download`, just use `npm install pixiv-illust` in your project.
+
 
 ## Cli
 
