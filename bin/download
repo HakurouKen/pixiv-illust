@@ -3,4 +3,4 @@
 var Downloader = require('../dist/bin/download');
 var path = require('path');
 
-Downloader.setup(path.join(__dirname,'..'));
+Downloader.setup();
