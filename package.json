@@ -1,5 +1,5 @@
 {
-  "name": "node-pixiv",
+  "name": "pixiv-illust",
   "version": "0.1.0",
   "description": "A third-party Node.js library for Pixiv.",
   "main": "dist/index.js",
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/HakurouKen/node-pixiv.git"
+    "url": "git+https://github.com/HakurouKen/pixiv-illust.git"
   },
   "keywords": [
     "pixiv",
@@ -25,9 +25,9 @@
   "author": "HakurouKen",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/HakurouKen/node-pixiv/issues"
+    "url": "https://github.com/HakurouKen/pixiv-illust/issues"
   },
-  "homepage": "https://github.com/HakurouKen/node-pixiv#readme",
+  "homepage": "https://github.com/HakurouKen/pixiv-illust#readme",
   "devDependencies": {
     "babel-cli": "^6.14.0",
     "babel-eslint": "^7.0.0",

@@ -1,11 +1,11 @@
-# node-pixiv
+# pixiv-illust
 一个 Pixiv 的第三方 Node.js 库。
 
 ## 安装
 
 ```
-git clone https://github.com/HakurouKen/node-pixiv.git
-cd node-pixiv && npm install
+git clone https://github.com/HakurouKen/pixiv-illust.git
+cd pixiv-illust && npm install
 npm link
 ```
 

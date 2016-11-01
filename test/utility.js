@@ -242,7 +242,7 @@ describe('utility', function(){
         let dataSource;
         before(function(){
             dataSource = {
-                repository: 'node-pixiv',
+                repository: 'pixiv-illust',
                 author: 'HakurouKen',
                 files: ['package.json','README.md']
             };
@@ -252,12 +252,12 @@ describe('utility', function(){
             expect(replacePlaceholder(`Author: {{author}}`, dataSource))
                 .to.equal('Author: HakurouKen');
             expect(replacePlaceholder(`Project: {{author}}/{{repository}}`, dataSource))
-                .to.equal('Project: HakurouKen/node-pixiv');
+                .to.equal('Project: HakurouKen/pixiv-illust');
         });
 
         it('should support javascript expression', function(){
             expect(replacePlaceholder(`Project: {{author + '/' + repository}}`, dataSource))
-                .to.equal('Project: HakurouKen/node-pixiv');
+                .to.equal('Project: HakurouKen/pixiv-illust');
 
             expect(replacePlaceholder(`Files: {{files.join(',')}}`, dataSource))
                 .to.equal('Files: package.json,README.md');
@@ -281,7 +281,7 @@ describe('utility', function(){
 
         it('should support custom delimiter', function(){
             expect(replacePlaceholder(`Project: <% author + '/' + repository %>`, dataSource, '<%', '%>'))
-                .to.equal('Project: HakurouKen/node-pixiv');
+                .to.equal('Project: HakurouKen/pixiv-illust');
             expect(replacePlaceholder(`PR: <% pr %>`, dataSource, '<%', '%>'))
                 .to.equal('PR: ');
         });

@@ -1,10 +1,10 @@
-# node-pixiv
+# pixiv-illust
 A third-party Node.js library for Pixiv.
 
 ## Install
 
 ```
-git clone https://github.com/HakurouKen/node-pixiv.git
+git clone https://github.com/HakurouKen/pixiv-illust.git
 cd node-pixiv && npm install
 npm link
 ```
