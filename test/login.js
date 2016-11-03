@@ -182,7 +182,7 @@ describe('login - ', function() {
             });
 
             it('should execute when loggedIn', function(done){
-                let action = new LoginTest()
+                let action = new LoginTest();
                 action.method().then(ret => {
                     expect(action.executed).to.equal(true);
                     expect(ret).to.equal(42);
