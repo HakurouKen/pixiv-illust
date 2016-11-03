@@ -1,5 +1,4 @@
 import 'babel-polyfill';
-import fs from 'fs';
 import path from 'path';
 import program from 'commander';
 import { login,Bookmark,Illust,Author,Rank } from '..';
@@ -18,7 +17,7 @@ program
     .option('-u --user <username>','username')
     .option('-p --password <password>','password')
     .option('-c --cookies <cookies>','cookie file')
-    .option('-d --dest [folder]','download destination folder','')
+    .option('-d --dest [folder]','download destination folder','');
 
 const loginAction = async () => {
     if (program.user && program.password) {
@@ -27,14 +26,14 @@ const loginAction = async () => {
     } else {
         await login.loads(program.cookies || cookieFile);
     }
-}
+};
 
 const getPath = (filePath) => {
     let folder = program.dest || '';
     return folder.charAt(0) === '/' ?
         path.join(folder,filePath) :
         path.join(BASE_PATH,folder,filePath);
-}
+};
 
 const downloadIllusts = async(list, name='{{author}} - {{title}}{{suffix}}') => {
     for (let info of list) {
@@ -45,7 +44,7 @@ const downloadIllusts = async(list, name='{{author}} - {{title}}{{suffix}}') => 
             console.error(`ID: ${info && info.id} download error.`);
         }
     }
-}
+};
 
 program
     .command('illust <id>')
@@ -53,7 +52,7 @@ program
         await loginAction();
         let illust = new Illust(id);
         await illust.download(getPath('{{author}} - {{title}}{{suffix}}'));
-        console.log(`Download successfully.`);
+        console.log('Download successfully.');
     });
 
 program
@@ -64,26 +63,26 @@ program
         let firstPage = await bookmark.get();
         let total = firstPage.total;
         await downloadIllusts(firstPage.contents);
-        for (let page = 2; page < firstPage; page++) {
+        for (let page = 2; page < total; page++) {
             let list = await bookmark.getPageContent(page);
             await downloadIllusts(list);
         }
-        console.log(`Download successfully.`);
+        console.log('Download successfully.');
     });
 
 program
     .command('author <id>')
-    .action(async (id,cmd) => {
+    .action(async (id) => {
         await loginAction();
         let author = new Author(id);
         let firstPage = await author.getIllusts();
         let total = firstPage.total;
         await downloadIllusts(firstPage.contents);
-        for (let page = 2; page < firstPage; page++) {
+        for (let page = 2; page < total; page++) {
             let list = await author.getIllustsContent(page);
             await downloadIllusts(list);
         }
-        console.log(`Download successfully.`);
+        console.log('Download successfully.');
     });
 
 program
@@ -96,5 +95,5 @@ program
         let rank = new Rank(cmd.mode,cmd.date);
         let contents = await rank.getRank(cmd.rank);
         await downloadIllusts(contents);
-        console.log(`Download successfully.`);
+        console.log('Download successfully.');
     });

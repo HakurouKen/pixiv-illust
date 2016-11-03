@@ -3,12 +3,11 @@ import login from './login';
 import { loginRequired } from './login';
 import { getDate,cachedProperty } from './utility';
 import Promise from 'Bluebird';
-import _ from 'lodash';
 
 const request = Promise.promisifyAll(require('request'));
 
-const MODES = ['daily','weekly','monthly','rookie','male','female']
-const RESTRICT_MODES = ['daily_r18','weekly_r18','r18g','male_r18','female_r18']
+const MODES = ['daily','weekly','monthly','rookie','male','female'];
+const RESTRICT_MODES = ['daily_r18','weekly_r18','r18g','male_r18','female_r18'];
 const PAGE = 'http://www.pixiv.net/ranking.php?format=json';
 
 class Rank {
@@ -44,7 +43,7 @@ class Rank {
             jar: login.cookieJar
         });
         if (resp.statusCode !== 200) {
-             throw resp;
+            throw resp;
         }
         return JSON.parse(resp.body);
     }

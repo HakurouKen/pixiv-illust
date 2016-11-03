@@ -12,11 +12,11 @@ class Author {
     }
 
     get infoUrl() {
-        return `http://www.pixiv.net/member.php?id=${this.id}`
+        return `http://www.pixiv.net/member.php?id=${this.id}`;
     }
 
     illustPageUrl(page=1) {
-        return `http://www.pixiv.net/member_illust.php?id=${this.id}&type=all&p=${page}`
+        return `http://www.pixiv.net/member_illust.php?id=${this.id}&type=all&p=${page}`;
     }
 
     @loginRequired
@@ -34,7 +34,7 @@ class Author {
             return {
                 name: $elem.find('.td1').text(),
                 value: $elem.find('.td2').text().trim()
-            }
+            };
         }).get();
     }
 
@@ -60,7 +60,7 @@ class Author {
                 illust_id: +($elem.find('a.work').attr('href').match(/\d+$/) || [0])[0],
                 url: $elem.find('img._thumbnail').attr('src'),
                 title: $elem.find('.title').text()
-            }
+            };
         }).get();
     }
 
@@ -76,7 +76,7 @@ class Author {
             totalPage: (total / 20 | 0) + 1,
             total: total,
             contents: contents
-        }
+        };
     }
 
     @cachedProperty
