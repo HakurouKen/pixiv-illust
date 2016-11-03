@@ -1,5 +1,4 @@
 import { expect } from 'chai';
-import _ from 'lodash';
 import Promise from 'Bluebird';
 import login from '../dist/login';
 import Rank from '../dist/rank';
@@ -26,10 +25,10 @@ describe('Rank', function(){
     describe('prototype#get#url()', function(){
         it('should return the request url', function(){
             let ranking = new Rank('daily','20161011');
-            expect(ranking.url).to.equal(`http://www.pixiv.net/ranking.php?format=json&mode=daily&date=20161011`);
+            expect(ranking.url).to.equal('http://www.pixiv.net/ranking.php?format=json&mode=daily&date=20161011');
 
             ranking = new Rank('daily_r18',new Date(1476205200000));
-            expect(ranking.url).to.equal(`http://www.pixiv.net/ranking.php?format=json&mode=daily_r18&date=20161012`);
+            expect(ranking.url).to.equal('http://www.pixiv.net/ranking.php?format=json&mode=daily_r18&date=20161012');
         });
     });
 
@@ -65,7 +64,7 @@ describe('Rank', function(){
                 let response = await ranking.getPage(2);
                 await doLogin();
                 let ranking2 = new Rank('weekly','20161011');
-                let response2 = await ranking.getPage(2);
+                let response2 = await ranking2.getPage(2);
                 expect(response).to.eql(response2);
                 done();
             })();
@@ -120,7 +119,7 @@ describe('Rank', function(){
     });
 
     describe('prototype#getAll()', function(){
-        it('should return all contents of ranking', function(){
+        it('should return all contents of ranking', function(done){
             // this test will take a long time.
             let ranking = new Rank('monthly');
             ranking.getAll().then(contents => {
@@ -129,6 +128,6 @@ describe('Rank', function(){
             }).catch(err => {
                 done(err);
             });
-        }).timeout(REQUEST_TIMEOUT*10)
+        }).timeout(REQUEST_TIMEOUT*10);
     });
 });

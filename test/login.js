@@ -56,7 +56,7 @@ describe('login - ', function() {
             it('should reject when not logged in', function(done){
                 let action = new LoginTest();
                 let ret = action.method();
-                ret.catch(e => {
+                ret.catch(() => {
                     done();
                 });
             });
@@ -176,7 +176,7 @@ describe('login - ', function() {
                 login.loads(cookieFile);
                 // if the method execute before login finished,
                 // variable `login.loggedIn` must be false
-                action.method().then(ret => {
+                action.method().then(() => {
                     done();
                 });
             });

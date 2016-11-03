@@ -249,40 +249,40 @@ describe('utility', function(){
         });
 
         it('should replace the placeholder with data in dataSource',function(){
-            expect(replacePlaceholder(`Author: {{author}}`, dataSource))
+            expect(replacePlaceholder('Author: {{author}}', dataSource))
                 .to.equal('Author: HakurouKen');
-            expect(replacePlaceholder(`Project: {{author}}/{{repository}}`, dataSource))
+            expect(replacePlaceholder('Project: {{author}}/{{repository}}', dataSource))
                 .to.equal('Project: HakurouKen/pixiv-illust');
         });
 
         it('should support javascript expression', function(){
-            expect(replacePlaceholder(`Project: {{author + '/' + repository}}`, dataSource))
+            expect(replacePlaceholder('Project: {{author + "/" + repository}}', dataSource))
                 .to.equal('Project: HakurouKen/pixiv-illust');
 
-            expect(replacePlaceholder(`Files: {{files.join(',')}}`, dataSource))
+            expect(replacePlaceholder('Files: {{files.join(",")}}', dataSource))
                 .to.equal('Files: package.json,README.md');
         });
 
         it('should replace nonexistent keys with empty string', function(){
-            expect(replacePlaceholder(`PR: {{pr}}`), dataSource)
+            expect(replacePlaceholder('PR: {{pr}}'), dataSource)
                 .to.equal('PR: ');
-            expect(replacePlaceholder(`Files: {{files[0]}}, PR: {{pr}}`, dataSource))
+            expect(replacePlaceholder('Files: {{files[0]}}, PR: {{pr}}', dataSource))
                 .to.equal('Files: package.json, PR: ');
         });
 
         it('should throw when syntax error happend in expression', function(){
-            expect(() => replacePlaceholder(`Syntax Error: {{ files+ }}`)).to.throw(Error);
+            expect(() => replacePlaceholder('Syntax Error: {{ files+ }}')).to.throw(Error);
         });
 
         it('should replace illegal expression with empty string', function(){
-            expect(replacePlaceholder(`Error: {{files.that.does.not.exist}}`,dataSource))
+            expect(replacePlaceholder('Error: {{files.that.does.not.exist}}',dataSource))
                 .to.equal('Error: ');
         });
 
         it('should support custom delimiter', function(){
-            expect(replacePlaceholder(`Project: <% author + '/' + repository %>`, dataSource, '<%', '%>'))
+            expect(replacePlaceholder('Project: <% author + "/" + repository %>', dataSource, '<%', '%>'))
                 .to.equal('Project: HakurouKen/pixiv-illust');
-            expect(replacePlaceholder(`PR: <% pr %>`, dataSource, '<%', '%>'))
+            expect(replacePlaceholder('PR: <% pr %>', dataSource, '<%', '%>'))
                 .to.equal('PR: ');
         });
     });
@@ -300,6 +300,6 @@ describe('utility', function(){
         it('should return the string directly when params given is string', function(){
             expect(getDate('20160102')).to.equal('20160102');
             expect(getDate('2016-01-02')).to.equal('2016-01-02');
-        })
+        });
     });
 });
