@@ -18,8 +18,8 @@ describe('Author', function(){
 
     describe('prototype#illustPageUrl(page)', function(){
         it('should return the page url', function(){
-            expect(author.illustPageUrl()).to.equal(`http://www.pixiv.net/member_illust.php?id=6996493&type=all&p=1`);
-            expect(author.illustPageUrl(2)).to.equal(`http://www.pixiv.net/member_illust.php?id=6996493&type=all&p=2`);
+            expect(author.illustPageUrl()).to.equal('http://www.pixiv.net/member_illust.php?id=6996493&type=all&p=1');
+            expect(author.illustPageUrl(2)).to.equal('http://www.pixiv.net/member_illust.php?id=6996493&type=all&p=2');
         });
     });
 
@@ -54,7 +54,7 @@ describe('Author', function(){
                 try {
                     let illust = await author.getIllusts();
                     expect(illust.currentPage).to.equal(1);
-                    expect(illust.totalPage).to.be.a('number')
+                    expect(illust.totalPage).to.be.a('number');
                     expect(illust.total).to.be.a('number');
                     checkContents(illust.contents);
                     done();

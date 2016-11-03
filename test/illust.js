@@ -1,5 +1,4 @@
 import { expect } from 'chai';
-import Promise from 'Bluebird';
 import path from 'path';
 import login from '../dist/login';
 import Illust from '../dist/illust';
@@ -21,7 +20,7 @@ describe('Illust',function(){
             } catch (err) {
                 return done(err);
             }
-        }
+        };
 
         it('should return info of a single illust', function(done){
             infoTestCase(59260474,{
@@ -67,7 +66,7 @@ describe('Illust',function(){
             } catch (err) {
                 return done(err);
             }
-        }
+        };
 
         it('should return the picture download queue (of single illust)', function(done){
             downloadQueueTestCase(58668275,[{

@@ -32,7 +32,7 @@ describe('BookMark', function(){
             login.reset();
             bookmark.getPage().then(()=> {
                 return done(new Error('Login check error'));
-            },err => {
+            },() => {
                 done();
             });
         });
@@ -66,7 +66,7 @@ describe('BookMark', function(){
             login.reset();
             bookmark.getPageContent().then(()=> {
                 return done(new Error('Login check error'));
-            },err => {
+            },() => {
                 done();
             });
         });
@@ -95,7 +95,7 @@ describe('BookMark', function(){
             login.reset();
             bookmark.getAll().then(()=> {
                 return done(new Error('Login check error'));
-            },err => {
+            },() => {
                 done();
             });
         });
@@ -110,5 +110,5 @@ describe('BookMark', function(){
             //     done();
             // }).catch(err => done(err));
         });
-    })
+    });
 });
