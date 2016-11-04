@@ -46,18 +46,28 @@ const downloadIllusts = async(list, name='{{author}} - {{title}}{{suffix}}') => 
     }
 };
 
+const withErrors = (func) => {
+    return async (...args) => {
+        try {
+            await func.apply(null,args);
+            console.log('Download successfully.');
+        } catch (e) {
+            console.error(e && e.stack);
+        }
+    }
+};
+
 program
     .command('illust <id>')
-    .action(async (id) => {
+    .action(withErrors(async (id) => {
         await loginAction();
         let illust = new Illust(id);
         await illust.download(getPath('{{author}} - {{title}}{{suffix}}'));
-        console.log('Download successfully.');
-    });
+    }));
 
 program
     .command('bookmark')
-    .action(async () => {
+    .action(withErrors(async () => {
         await loginAction();
         let bookmark = new Bookmark();
         let firstPage = await bookmark.get();
@@ -67,12 +77,11 @@ program
             let list = await bookmark.getPageContent(page);
             await downloadIllusts(list);
         }
-        console.log('Download successfully.');
-    });
+    }));
 
 program
     .command('author <id>')
-    .action(async (id) => {
+    .action(withErrors(async (id) => {
         await loginAction();
         let author = new Author(id);
         let firstPage = await author.getIllusts();
@@ -82,18 +91,16 @@ program
             let list = await author.getIllustsContent(page);
             await downloadIllusts(list);
         }
-        console.log('Download successfully.');
-    });
+    }));
 
 program
     .command('rank')
     .option('-m --mode <mode>','rank mode','daily')
     .option('-t --date <date>','date of rank list')
     .option('-r --rank <rank>','top n rank',parseInt,50)
-    .action(async (cmd) => {
+    .action(withErrors(async (cmd) => {
         await loginAction();
         let rank = new Rank(cmd.mode,cmd.date);
         let contents = await rank.getRank(cmd.rank);
         await downloadIllusts(contents);
-        console.log('Download successfully.');
-    });
+    }));
