@@ -38,7 +38,7 @@ describe('Rank', function(){
         });
 
         after(function(){
-            doLogin();
+            return doLogin();
         });
 
         function checkResponse(response){
@@ -60,20 +60,24 @@ describe('Rank', function(){
 
         it('should return the same json data of normal mode when logged in', function(done){
             (async function(){
-                let ranking = new Rank('weekly','20161011');
-                let response = await ranking.getPage(2);
-                await doLogin();
-                let ranking2 = new Rank('weekly','20161011');
-                let response2 = await ranking2.getPage(2);
-                expect(response).to.eql(response2);
-                done();
+                try {
+                    let ranking = new Rank('weekly','20161011');
+                    let response = await ranking.getPage(2);
+                    await doLogin();
+                    let ranking2 = new Rank('weekly','20161011');
+                    let response2 = await ranking2.getPage(2);
+                    expect(response).to.eql(response2);
+                    done();
+                } catch(err) {
+                    done(err)
+                }
             })();
         }).timeout(REQUEST_TIMEOUT*2);
 
         it('should return the json data of restrict mode when logged in', function(done){
             (async function(){
-                doLogin();
                 try {
+                    await doLogin();
                     let ranking = new Rank('weekly_r18','20161011');
                     let response = await ranking.getPage(2);
                     checkResponse(response);
@@ -102,7 +106,7 @@ describe('Rank', function(){
                 expect(getPageResponse).to.eql(getResponse);
                 done();
             });
-        }).timeout(REQUEST_TIMEOUT);
+        }).timeout(REQUEST_TIMEOUT*2);
     });
 
     describe('prototype#getRank(rank)', function() {

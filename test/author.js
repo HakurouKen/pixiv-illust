@@ -12,8 +12,8 @@ function doLogin(){
 describe('Author', function(){
     let author;
     before(function(){
-        doLogin();
         author = new Author(TEST_USER_ID);
+        return doLogin();
     });
 
     describe('prototype#illustPageUrl(page)', function(){

@@ -125,6 +125,7 @@ describe('login - ', function() {
         before(() => {
             // user = login.login(account.USERNAME,account.PASSWORD);
             user = login.loads(path.join(__dirname,'.cookie.privacy.json'));
+            return user;
         });
 
         describe('get#cookies()', function() {
@@ -164,19 +165,19 @@ describe('login - ', function() {
 
         describe('#@loginRequired',function(){
             let cookieFile = path.join(__dirname,'.cookie.privacy.json');
+            beforeEach(function(){
+                return login.loads(cookieFile);
+            });
 
             it('should be wrapped to a Promise', function(){
                 let action = new LoginTest();
                 expect(action.method()).to.be.an.instanceof(Promise);
             });
 
-            it('should not execute before the login finished', function(done){
+            it('should reject when not logged in', function(done){
                 let action = new LoginTest();
                 login.reset();
-                login.loads(cookieFile);
-                // if the method execute before login finished,
-                // variable `login.loggedIn` must be false
-                action.method().then(() => {
+                action.method().catch(() => {
                     done();
                 });
             });
@@ -187,6 +188,8 @@ describe('login - ', function() {
                     expect(action.executed).to.equal(true);
                     expect(ret).to.equal(42);
                     done();
+                }).catch(err => {
+                    done(err);
                 });
             });
         });

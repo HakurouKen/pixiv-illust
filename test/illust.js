@@ -7,7 +7,7 @@ const ASYNC_REQUEST_TIMEOUT = 10000;
 
 describe('Illust',function(){
     before(function(){
-        login.loads(path.join(__dirname,'.cookie.privacy.json'));
+        return login.loads(path.join(__dirname,'.cookie.privacy.json'));
     });
 
     describe('prototype#getInfo()', function(){

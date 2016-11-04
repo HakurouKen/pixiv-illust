@@ -53,6 +53,15 @@ class Login {
                 reject.call(self,args);
             };
         });
+        // always resolve this promise to `Unhandled rejection`
+        // resolve with an array:
+        //  if resolved , the first element is the original resolve result.
+        //  if rejected ,the first element will be null, the error rejected will be the second params.
+        self.pending.then(result => {
+            return [result,null];
+        }).catch(err => {
+            return Promise.resolve([null,err]);
+        });
         return [_resolve,_reject];
     }
 
@@ -156,12 +165,6 @@ export function loginRequired(target, prop, descriptor) {
             if (login.loggedIn) {
                 let ret = method.apply(this, args);
                 return ret instanceof Promise ? ret : Promise.resolve(ret);
-            }
-            if (login.pending) {
-                return login.pending.then(() => {
-                    let ret = method.apply(this, args);
-                    return ret;
-                });
             }
         } catch(e) {
             return Promise.reject(e);
