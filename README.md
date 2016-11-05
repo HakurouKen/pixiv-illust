@@ -34,8 +34,8 @@ NOTE: If you only want to use javascript api without global command `pixiv-downl
 -d --dest [folder]        download destination folder
 ```
 
-if `-u -p` is specified, the `-c` params will be ignored.
-Once logged in, login cookie will be cached as json in file `.cookie.json`. If no login params is specified, the program will try to load this default cached cookie.
+If `-u -p` is specified, the `-c` params will be ignored.
+Once logged in, login cookies will be cached as json in file `.cookies.json`. If no login params is specified, the program will try to load this default cached cookies.
 
 ### Illust
 
