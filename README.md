@@ -157,6 +157,32 @@ Get the favorited bookmark.
 
 `Bookmark.prototype.getAll()`: Get all bookmarks.
 
+```javascript
+var pixiv = require('pixiv-illust');
+var login = pixiv.login,
+    Illust = pixiv.Illust,
+    Bookmark = pixiv.Bookmark;
+
+var loggedIn = login.loads('./.cookies.json');
+
+var downloadIllusts = function(list) {
+    list = list || [];
+    var illust,
+        info = list[0];
+    if (!info) {
+        return Promise.resolve(null);
+    }
+    illust = new Illust(info.illust_id);
+    return illust.download().then(function(){
+        return downloadIllusts(list.slice(1));
+    });
+}
+// download the first page.
+loggedIn.then(function(){
+    var bookmark = new Bookmark();
+    return bookmark.getPageContent(1);
+}).then(downloadIllusts).catch(console.error);
+```
 
 ### Author
 
