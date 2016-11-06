@@ -74,6 +74,113 @@ Option:
 pixiv-download rank
 ```
 
+## Api
+
+### login
+
+Login in pixiv(CN). Most of actions need login state, so do it before other operations.
+
+An error will be thrown when you do other operations needs login before login.
+
+When you loggged in, you can cached your cookie as a json file use `login.dumps`, and next time you can load your login states from file using `login.loads`.
+
+You can also clear your login state use `login.reset`. Note that this is the only synchronous method of login actions.
+
+```javascript
+var login = require('pixiv-illust').login;
+// return a Promise resolved with the response.
+login.login('PIXIV_ACCOUNT','PIXIV_PASSWORD').then(function(resp){
+    // login now.
+    console.log(resp);
+    // save the cookies.
+    return login.dumps('./.cookies.json');
+}).then(function(){
+    // clear the login cookies.
+    login.reset();
+}).catch(function(err){
+    // some error happend when login.
+});
+
+// Or you can load cookies from file.
+login.loads('./cookies.json').then(function(){
+    console.log('Already logged in.');
+});
+```
+
+
+### illust
+
+Get the illust by pixiv illust id.
+
+`Illust.prototype.getInfo()` : Get illust info.
+
+`Illust.prototype.download(pathTemplate)` : Download the illust to specified path. Strings wrapped by `{{}}`(eg: `{{title}}`) will be treated as a template string and will be replaced by the corresponded value of illust. Values `id`,`title`,`suffix`,`author`,`date` are vaild.
+
+```javascript
+var pixiv = require('pixiv-illust');
+var login = pixiv.login,
+    Illust = pixiv.Illust;
+var loggedIn = login.login('PIXIV_ACCOUNT','PIXIV_PASSWORD');
+
+var illust = new Illust(36486718);
+
+// Get info of illust.
+loggedIn.then(function(){
+    return illust.getInfo();    
+}).then(function(info){
+    console.log(info);
+    // { id: 36486718,
+    // title: 'セーラームーン',
+    // author: 'SALT',
+    // tools: [ 'Photoshop' ],
+    // page: 'http://www.pixiv.net/member_illust.php?mode=medium&illust_id=36486718',
+    // date: '2013年6月19日 02:26' }
+})
+
+// Download illust.
+loggedIn.then(function(){
+    illust.download('{{author}} - {{title}}{{suffix}}');
+});
+
+```
+
+
+### Bookmark
+
+Get the favorited bookmark.
+
+`Bookmark.prototype.getPage(page=1)`: Get the specified page of bookmarks.
+
+`Bookmark.prototype.get(page=1)`: Alias of `getPage`.
+
+`Bookmark.prototype.getPageContent(page=1)`: Get the page of bookmarks (only illust info, without page info).
+
+`Bookmark.prototype.getAll()`: Get all bookmarks.
+
+
+### Author
+
+Get author info.
+
+`Author.prototype.getInfo()`: Get author info array.
+
+`Author.prototype.getIllusts(page=1)`: Get the specified page of illusts by author.
+
+`Author.prototype.getIllustsContent(page=1)`： Get the specified page of illusts (without page info).
+
+`Author.prototype.getAllIllusts()`: Get all illusts made by the author.
+
+
+### Rank
+
+`Rank.prototype.getPage(page=1)`: Get the specified page of custom leaderboard.
+
+`Rank.prototype.get(page)`: Alias of `getPage`.
+
+`Rank.prototype.getRank(rank=500)`: Get the top n rank.
+
+`Rank.prototype.getAll()`: Get the full list of custom rank.
+
 
 ## Example
 ```
