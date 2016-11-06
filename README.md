@@ -223,6 +223,8 @@ Get author info.
 
 ### Rank
 
+`Rank.prototype.constructor(mode='daily',date=null)`: Constructor needs mode/date params. Vaild modes are `daily`,`weekly`,`monthly`,`rookie`,`male`,`female` (do not require login), `daily_r18`,`weekly_r18`,`r18g`,`male_r18`, `female_r18` (r18 needs login). Params `date` should be a formated date-string `yyyyMMdd`, or a Date object. The default date is 30 hours ago.
+
 `Rank.prototype.getPage(page=1)`: Get the specified page of custom leaderboard.
 
 `Rank.prototype.get(page)`: Alias of `getPage`.
@@ -230,3 +232,17 @@ Get author info.
 `Rank.prototype.getRank(rank=500)`: Get the top n rank.
 
 `Rank.prototype.getAll()`: Get the full list of custom rank.
+
+```javascript
+var pixiv = require('pixiv-illust');
+var login = pixiv.login
+    Rank = pixiv.Rank;
+
+var loggedIn = login.loads('./.cookies.json');
+
+loggedIn.then(function(){
+    var rank = new Date('weekly','20161001');
+    // get weelky top 100 illusts ranked on 2016-10-01.
+    return rank.getRank(100);
+}).then(console.log);
+```
