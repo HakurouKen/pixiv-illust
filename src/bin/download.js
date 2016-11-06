@@ -54,7 +54,7 @@ const withErrors = (func) => {
         } catch (e) {
             console.error(e && e.stack);
         }
-    }
+    };
 };
 
 program

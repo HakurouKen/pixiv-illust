@@ -69,7 +69,7 @@ describe('Rank', function(){
                     expect(response).to.eql(response2);
                     done();
                 } catch(err) {
-                    done(err)
+                    done(err);
                 }
             })();
         }).timeout(REQUEST_TIMEOUT*2);
