@@ -20,7 +20,7 @@ If you don't want to set global alias, use `./bin/download` instead.
 npm install pixiv-illust -g
 ```
 
-NOTE: If you only want to use javascript api without global command `pixiv-download`, just use `npm install pixiv-illust` in your project.
+NOTE: If you only want to use javascript api without global command `pixiv-download`, just use `npm install pixiv-illust --save` in your project.
 
 
 ## Cli
