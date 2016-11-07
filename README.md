@@ -106,7 +106,7 @@ Login in pixiv(CN). Most of actions need login state, so do it before other oper
 
 An error will be thrown when you do other operations needs login before login.
 
-When you loggged in, you can cached your cookie as a json file use `login.dumps`, and next time you can load your login states from file using `login.loads`.
+When you loggged in, you can cached your cookies as a json file use `login.dumps`, and next time you can load your login states from file using `login.loads`.
 
 You can also clear your login state use `login.reset`. Note that this is the only synchronous method of login actions.
 
