@@ -246,3 +246,6 @@ loggedIn.then(function(){
     return rank.getRank(100);
 }).then(console.log);
 ```
+
+## License
+MIT
