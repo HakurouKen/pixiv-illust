@@ -21,7 +21,7 @@ npm install pixiv-illust -g
 
 注意：如果你只想使用 javascript API 而不是全局 `pixiv-download` 指令时，只需 `npm install pixiv-illust --save`。
 
-## Cli
+## 命令行
 
 ### 基础参数
 ```
@@ -33,7 +33,7 @@ npm install pixiv-illust -g
 ```
 
 如果指定了 `-u -p` 参数，`-c` 参数将会被忽略。
-登录后，登陆的 cookie 将会被缓存到 `.cookie.json` 中。如果指定没有登录参数，将会默认尝试加载这个缓存 cookie.
+登录后，登陆的 cookies 将会被缓存到 `.cookies.json` 中。如果指定没有登录参数，将会默认尝试加载这个缓存 cookies.
 
 ### 插画
 
@@ -217,7 +217,7 @@ loggedIn.then(function(){
 `Author.prototype.getAllIllusts()`: 获取指定作者的所有作品.
 
 
-### Rank
+### 排行榜
 
 `Rank.prototype.constructor(mode='daily',date=null)`: 构造器需要 mode/date 两个参数. 可选模式有 `daily`,`weekly`,`monthly`,`rookie`,`male`,`female` (无需登录), `daily_r18`,`weekly_r18`,`r18g`,`male_r18`, `female_r18` (r18 需要登录). 参数 `date` 需要是 `yyyyMMdd`格式的字符串或 Date 对象, 默认为30小时前的日期.
 
