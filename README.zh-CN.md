@@ -98,7 +98,7 @@ pixiv-download rank -m daily -t 20161001 -n 100
 
 ## Api
 
-### 登录
+### 登录 (login)
 
 登录 Pixiv(CN). 大多数操作需要登录态，所以最好在做其它操作前进行登录。
 
@@ -129,7 +129,7 @@ login.loads('./cookies.json').then(function(){
 });
 ```
 
-### 图片
+### 图片 (Illust)
 
 通过 ID 获取图片。
 
@@ -165,7 +165,7 @@ loggedIn.then(function(){
 
 ```
 
-### 收藏
+### 收藏 (Bookmark)
 
 获取所有收藏.
 
@@ -204,7 +204,7 @@ loggedIn.then(function(){
 }).then(downloadIllusts).catch(console.error);
 ```
 
-### 作者
+### 作者 (Author)
 
 获取坐着的信息.
 
@@ -217,7 +217,7 @@ loggedIn.then(function(){
 `Author.prototype.getAllIllusts()`: 获取指定作者的所有作品.
 
 
-### 排行榜
+### 排行榜 (Rank)
 
 `Rank.prototype.constructor(mode='daily',date=null)`: 构造器需要 mode/date 两个参数. 可选模式有 `daily`,`weekly`,`monthly`,`rookie`,`male`,`female` (无需登录), `daily_r18`,`weekly_r18`,`r18g`,`male_r18`, `female_r18` (r18 需要登录). 参数 `date` 需要是 `yyyyMMdd`格式的字符串或 Date 对象, 默认为30小时前的日期.
 
