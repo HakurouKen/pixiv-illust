@@ -206,7 +206,7 @@ loggedIn.then(function(){
 
 ### 作者 (Author)
 
-获取坐着的信息.
+获取作者的信息.
 
 `Author.prototype.getInfo()`: 获取作者信息详情的数组.
 
