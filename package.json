@@ -7,7 +7,8 @@
     "lint": "eslint src/ && eslint test/ -c .eslintrc.test.js",
     "compile": "babel src -d dist",
     "prepublish": "npm run compile && npm run lint && node chmod.js",
-    "test": "npm run compile && mocha --compilers js:babel-register"
+    "test": "npm run compile && mocha --compilers js:babel-register",
+    "precommit": "npm run lint"
   },
   "repository": {
     "type": "git",
