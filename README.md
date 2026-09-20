@@ -1,3 +1,5 @@
+
+
 # pixiv-illust
 [![npm](https://img.shields.io/npm/v/pixiv-illust.svg)](https://www.npmjs.com/package/pixiv-illust)
 [![LICENCE](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/HakurouKen/pixiv-illust)
@@ -58,7 +60,7 @@ pixiv-download bookmark
 
 Download by author id
 ```
-pixiv-downoad author <id>
+pixiv-download author <id>
 ```
 
 ### Rank
